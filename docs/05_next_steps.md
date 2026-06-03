@@ -3,7 +3,7 @@
 ## 1. Immediate Goal
 
 Build v3 from `roi_reserve_v2` episode evidence. The current champion has
-public score `600.0` and adds **target ROI**, **source reserves**, **sun path
+public score `353.8` and adds **target ROI**, **source reserves**, **sun path
 rejection**, **orbit-aware aiming**, and **target reservation**.
 
 ## 2. Current Evidence
@@ -44,11 +44,14 @@ planets.
 ## 3. Next Work Items
 
 1. **Episode monitoring**
-   Inspect `roi_reserve_v2` episodes after they are available.
+   Inspect `roi_reserve_v2` episodes after they are available. Use
+   `docs/06_replay_review_workflow.md` and keep raw replay files under
+   `replays/`.
 
 2. **Replay diagnostics**
    Inspect submitted-game wins and losses, plus v2 smoke-test loss seeds `18`,
-   `24`, and `27`.
+   `24`, and `27`. Start with `scripts/replay_diagnostics.py`, not a new
+   notebook.
 
 3. **Defense and incoming fleets**
    Add incoming-threat checks before launching from exposed planets.

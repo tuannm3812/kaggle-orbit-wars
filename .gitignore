@@ -9,4 +9,5 @@ starter_main.py
 *.zip
 *.tar.gz
 __pycache__/
+.pytest_cache/
 .ipynb_checkpoints/

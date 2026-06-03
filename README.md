@@ -47,6 +47,9 @@ agents/
 tests/
   test_roi_reserve_agent.py
   test_roi_reserve_agent_v2.py
+  test_replay_diagnostics.py
+scripts/
+  replay_diagnostics.py
 data/
   raw/
   processed/

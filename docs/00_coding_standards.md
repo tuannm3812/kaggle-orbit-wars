@@ -48,6 +48,10 @@ Reserve new numbers for promoted project-owned workflows. For small
 parameter-only variants, prefer configuration cells and a version log entry over
 creating many near-duplicate notebooks.
 
+Replay review should start with scripts and docs, not notebooks. Add a new
+notebook only when replay work needs substantial visualization, a reusable
+analysis workflow, or a major agent-code change.
+
 Keep champion and challenger lanes separate:
 
 - champion notebooks are stable, reproducible, and submission-safe;
@@ -241,6 +245,7 @@ After submitting:
 - check submission status;
 - wait for episodes;
 - download replays/logs for at least one win and one loss when available;
+- run `scripts/replay_diagnostics.py` on downloaded replay JSON files;
 - update the version log with score, observations, and next decision.
 
 ## 12. Documentation Style
