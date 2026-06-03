@@ -1,0 +1,15 @@
+{
+  "id": "tuannm3812/orbit-wars-eda-baseline",
+  "title": "Orbit Wars EDA Baseline",
+  "code_file": "01_orbit_wars_eda.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_internet": false,
+  "dataset_sources": [],
+  "competition_sources": [
+    "orbit-wars"
+  ],
+  "kernel_sources": []
+}
