@@ -11,9 +11,34 @@ Current champion:
 
 | Version | Public score | Smoke losses |
 | --- | ---: | --- |
-| `roi_reserve_v2` | `343.6` | Seeds `18`, `24`, `27` |
+| `roi_reserve_v2` | `423.1` | Seeds `18`, `24`, `27` |
 
-## 2. Access Constraint
+## 2. Official Replay Commands
+
+The official Orbit Wars starter guide documents these Kaggle commands for
+episode review after a submission has played games:
+
+```bash
+kaggle competitions submissions orbit-wars
+kaggle competitions episodes <SUBMISSION_ID>
+kaggle competitions episodes <SUBMISSION_ID> -v
+kaggle competitions replay <EPISODE_ID> -p ./replays
+kaggle competitions logs <EPISODE_ID> 0 -p ./logs
+kaggle competitions logs <EPISODE_ID> 1 -p ./logs
+```
+
+Expected review flow:
+
+1. Find the relevant **submission ID** from the submission table.
+2. List episodes for that submission.
+3. Select at least one **win**, one **loss**, and one close game.
+4. Download replay JSON and logs for our player slot.
+5. Store raw files under ignored local folders.
+6. Run the local diagnostics script.
+7. Curate only durable lessons into `docs/05_next_steps.md` and
+   `docs/04_agent_version_log.md`.
+
+## 3. Current Access Constraint
 
 The installed Kaggle CLI currently exposes only:
 
@@ -22,11 +47,13 @@ list, files, download, submit, submissions, leaderboard
 ```
 
 It does not expose `episodes`, `replay`, or `logs`. The Python Kaggle API in
-this environment also exposes submissions but not episode/replay helpers.
+this environment also exposes submissions but not episode/replay helpers. A
+local package-source scan also found no references to `episodes`, `replay`,
+`logs`, or `pages`.
 
 Practical rule: download episode replay JSON from the Kaggle web UI, or use an
-upgraded Kaggle CLI in a controlled environment if replay commands become
-available. Store raw files under ignored paths:
+environment where the official replay commands are available. Store raw files
+under ignored paths:
 
 ```text
 replays/roi_reserve_v2/
@@ -38,7 +65,7 @@ Current local check: no replay JSON or HTML files are available under
 downloaded, loss diagnosis should be labeled as **benchmark-derived**, not
 replay-confirmed.
 
-## 3. Diagnostic Command
+## 4. Diagnostic Command
 
 Run replay summaries with:
 
@@ -54,7 +81,7 @@ Generated outputs:
 | `player_summary.csv` | Per-player final production, score proxy, action count, and launched ships. |
 | `replay_findings.md` | Short Markdown handoff for strategy review. |
 
-## 4. Review Questions
+## 5. Review Questions
 
 For each loss, answer only decision-relevant questions:
 
@@ -62,9 +89,29 @@ For each loss, answer only decision-relevant questions:
 2. Did the winner control production earlier or simply survive longer?
 3. Did our action count or launched ships suggest over-reserving or over-attacking?
 4. Were losses concentrated around orbiting targets, sun-blocked geometry, or exposed source planets?
-5. What is the smallest v3 behavior change that should prevent the pattern?
+5. Did we lose ships to **comet expiration**, failed comet timing, or comet
+   over-commitment?
+6. Were high-production owned planets left under-defended while low-value
+   planets launched attacks?
+7. What is the smallest v3 behavior change that should prevent the pattern?
 
-## 5. Benchmark-Derived Loss Notes
+## 6. Replay Review Checklist
+
+For every downloaded episode, capture these fields in the generated findings or
+the version log:
+
+| Field | Why it matters |
+| --- | --- |
+| Submission id and episode id | Makes the replay traceable. |
+| Player slot | Logs are player-slot-specific. |
+| Result and final score proxy | Separates close losses from collapses. |
+| Final planets and production | Shows whether the loss is economic. |
+| Action count and launched ships | Flags over-reserving or over-attacking. |
+| Sun/path failures | Directly tests trajectory logic. |
+| Incoming enemy pressure | Tests whether defense gating is needed. |
+| Comet ownership and expiry | Tests whether comet policy helps or hurts. |
+
+## 7. Benchmark-Derived Loss Notes
 
 `roi_reserve_v2` improves the random smoke benchmark from **25/30** wins to
 **27/30** wins, fixing v1 loss seeds `11` and `17`. The remaining losses are
@@ -87,7 +134,7 @@ Most likely v3 direction: add **defense-aware launch gating** and
 agent can reserve ships on sources, but it does not know whether a source is
 already threatened or whether a target will be contested before arrival.
 
-## 6. Notebook Rule
+## 8. Notebook Rule
 
 Do not create a replay notebook just to inspect a few files. Use scripts and
 docs first.

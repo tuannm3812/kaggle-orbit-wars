@@ -32,17 +32,23 @@ Official downloadable starter files:
 | `agents.md` | `6486` bytes | Getting-started guide, local testing, CLI workflow, replay/log commands. |
 | `main.py` | `2079` bytes | Nearest-planet starter agent. |
 
-Live Kaggle CLI check on 2026-06-03:
+Use the official overview page plus these downloadable files as the
+authoritative rule source. The rendered overview page is useful for navigation,
+but the downloadable `README.md` and `agents.md` are the practical references
+for implementation details, local testing, submission packaging, and replay
+commands.
+
+Latest Kaggle CLI check on 2026-06-03:
 
 | Item | Value |
 | --- | --- |
 | Deadline | `2026-06-23 23:59:00` |
 | Category | `Featured` |
 | Reward | `50,000 Usd` |
-| Team count | `3676` |
+| Team count | `3695` |
 | User entered | `True` |
-| User submissions | None yet |
-| Public leaderboard top score | `1750.5` |
+| Latest user submission score | `423.1` |
+| Public leaderboard top score | `1785.9` |
 
 Important correction: a third-party mirror showed a later July deadline, but the
 **live Kaggle CLI** reports `2026-06-23 23:59:00`. Treat Kaggle CLI/page metadata as
@@ -248,7 +254,65 @@ current installed CLI help only exposes `list`, `files`, `download`, `submit`,
 are unavailable locally, use Kaggle's web UI or upgrade the CLI in a controlled
 environment.
 
-## 10. Kaggle Runtime Notes
+## 10. Replay And Episode Review
+
+The official starter guide documents a replay workflow after a submission has
+played public games. The intended sequence is:
+
+1. Submit the agent and wait for games to complete.
+2. Read the submission table and identify the relevant **submission ID**.
+3. List episodes for that submission.
+4. Download replay JSON for selected wins and losses.
+5. Download logs for our agent slot when debugging action choices or errors.
+6. Run local replay diagnostics and curate only durable lessons into docs.
+
+Official command shape:
+
+```bash
+kaggle competitions submissions orbit-wars
+kaggle competitions episodes <SUBMISSION_ID>
+kaggle competitions episodes <SUBMISSION_ID> -v
+kaggle competitions replay <EPISODE_ID> -p ./replays
+kaggle competitions logs <EPISODE_ID> 0 -p ./logs
+kaggle competitions logs <EPISODE_ID> 1 -p ./logs
+```
+
+Local environment caveat: the installed `kaggle` package reports
+`Kaggle API 1.7.4.5`, and its `competitions` command group currently contains
+only:
+
+```text
+list, files, download, submit, submissions, leaderboard
+```
+
+The installed Python package also has no local source references for
+`episodes`, `replay`, `logs`, or `pages`. Until a Kaggle CLI build with those
+commands is available here, use one of these paths:
+
+- download replay JSON and logs from the Kaggle web UI, then save them under
+  ignored folders such as `replays/roi_reserve_v2/` and `logs/roi_reserve_v2/`;
+- run the official replay commands from an environment where Kaggle exposes
+  them, then copy only the downloaded files into the ignored local folders;
+- continue using smoke benchmark loss seeds as **benchmark-derived** evidence,
+  but do not label those findings as replay-confirmed.
+
+Local diagnostic command once replay files exist:
+
+```bash
+python3 scripts/replay_diagnostics.py replays/roi_reserve_v2/*.json --player 0 --out-dir outputs/replay_diagnostics/roi_reserve_v2
+```
+
+For each replay, record:
+
+- match result, episode id, submission id, and our player slot;
+- whether the loss was **elimination**, **production deficit**, or **ship-count
+  deficit**;
+- whether the decisive mistake involved **sun collisions**, **orbiting target
+  misses**, **source overdraw**, **incoming enemy fleets**, **failed
+  reinforcement**, **comet losses**, or **endgame scoring**;
+- the smallest next behavior change that would have prevented the pattern.
+
+## 11. Kaggle Runtime Notes
 
 The first EDA notebook showed:
 
@@ -260,7 +324,7 @@ The first EDA notebook showed:
 Practical rule: run **Orbit Wars simulations on Kaggle** until a local package with
 `orbit_wars` is available.
 
-## 11. First Strategy Hypotheses
+## 12. First Strategy Hypotheses
 
 Use a rule-based economic-combat bot before attempting RL.
 
@@ -284,7 +348,7 @@ value = production_value + strategic_position_value + denial_value
 
 This is intentionally simple. The goal is to get a strong, inspectable baseline before adding simulation search.
 
-## 12. Metrics To Track
+## 13. Metrics To Track
 
 Per game:
 
@@ -308,7 +372,7 @@ Per map seed:
 - nearest high-production targets;
 - sun-blocked routes between important planet pairs.
 
-## 13. Operating Discipline
+## 14. Operating Discipline
 
 Borrow the Maze Crawler workflow:
 
