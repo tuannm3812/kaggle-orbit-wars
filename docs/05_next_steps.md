@@ -3,7 +3,7 @@
 ## 1. Immediate Goal
 
 Build v3 from `roi_reserve_v2` episode evidence. The current champion has
-public score `353.8` and adds **target ROI**, **source reserves**, **sun path
+latest observed public score `343.6` and adds **target ROI**, **source reserves**, **sun path
 rejection**, **orbit-aware aiming**, and **target reservation**.
 
 ## 2. Current Evidence
@@ -41,6 +41,23 @@ planets.
 | Win rate | `90.0%` |
 | Run errors | `0` |
 
+Remaining v2 smoke losses are seeds `18`, `24`, and `27`. The current Kaggle
+CLI/API cannot fetch public episode replays from this environment, and no replay
+files are local yet, so the immediate strategy should use these benchmark losses
+as the evidence base while we wait for downloaded public replays.
+
+The loss profile points to **strategic weakness**, not action-format or runtime
+failure:
+
+- v2 wins 27/30 against `random`, but the public score remains far below strong
+  leaderboard agents, so the random smoke benchmark is useful for regressions
+  but not sufficient for strength.
+- Remaining loss seeds are heavy on **orbiting geometry** and include hard
+  collapses where the agent is eliminated or nearly eliminated.
+- The v2 policy captures attractive targets, but it does not model **incoming
+  enemy fleets**, **contested arrivals**, **reinforcement**, or source planets
+  that should stop launching because they are under threat.
+
 ## 3. Next Work Items
 
 1. **Episode monitoring**
@@ -54,12 +71,21 @@ planets.
    notebook.
 
 3. **Defense and incoming fleets**
-   Add incoming-threat checks before launching from exposed planets.
+   Add incoming-threat checks before launching from exposed planets. This should
+   be the next model change before further target-score calibration.
 
-4. **Comet policy**
+4. **Contested target cost**
+   Estimate whether enemy ships can arrive before or near our capture time, then
+   increase required ships or skip the target.
+
+5. **Reinforcement**
+   Move spare ships from safe low-value planets toward threatened high-production
+   owned planets.
+
+6. **Comet policy**
    Ignore or capture comets based on remaining lifetime and travel cost.
 
-5. **Kaggle smoke run**
+7. **Kaggle smoke run**
    Run the same 30 seeds against `random` and compare against `roi_reserve_v2`.
 
 ## 4. Evaluation Checklist
