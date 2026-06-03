@@ -2,10 +2,9 @@
 
 ## 1. Immediate Goal
 
-Monitor `roi_reserve_v2` after notebook-output submission, then build v3 from
-episode evidence. The current submitted agent adds **target ROI**, **source
-reserves**, **sun path rejection**, **orbit-aware aiming**, and **target
-reservation**.
+Build v3 from `roi_reserve_v2` episode evidence. The current champion has
+public score `600.0` and adds **target ROI**, **source reserves**, **sun path
+rejection**, **orbit-aware aiming**, and **target reservation**.
 
 ## 2. Current Evidence
 
@@ -44,8 +43,8 @@ planets.
 
 ## 3. Next Work Items
 
-1. **Submission monitoring**
-   Wait for `roi_reserve_v2` public score and episodes.
+1. **Episode monitoring**
+   Inspect `roi_reserve_v2` episodes after they are available.
 
 2. **Replay diagnostics**
    Inspect submitted-game wins and losses, plus v2 smoke-test loss seeds `18`,
