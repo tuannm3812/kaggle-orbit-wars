@@ -3,7 +3,7 @@
 ## 1. Immediate Goal
 
 Build v3 from `roi_reserve_v2` episode evidence. The current champion has
-latest observed public score `446.5` and adds **target ROI**, **source reserves**, **sun path
+latest observed public score `409.4` and adds **target ROI**, **source reserves**, **sun path
 rejection**, **orbit-aware aiming**, and **target reservation**.
 
 ## 2. Current Evidence

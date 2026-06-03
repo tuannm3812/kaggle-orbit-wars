@@ -39,10 +39,8 @@ Use these directories:
 Use numbered, stable notebook names that describe the workflow:
 
 1. `01_orbit_wars_eda.ipynb`
-2. `02_loss_replay_diagnostics.ipynb`
-3. `03_roi_baseline_agent.ipynb`
-4. `04_orbit_aware_agent.ipynb`
-5. `05_challenger_search_and_tuning.ipynb`
+2. `02_agent_submission.ipynb`
+3. `03_replay_review.ipynb`
 
 Reserve new numbers for promoted project-owned workflows. For small
 parameter-only variants, prefer configuration cells and a version log entry over
@@ -52,11 +50,18 @@ Replay review should start with scripts and docs, not notebooks. Add a new
 notebook only when replay work needs substantial visualization, a reusable
 analysis workflow, or a major agent-code change.
 
-Keep champion and challenger lanes separate:
+Keep notebooks focused on reusable workflows:
 
-- champion notebooks are stable, reproducible, and submission-safe;
-- challenger notebooks may test one clear hypothesis at a time;
-- archive or demote notebooks when their strategy is superseded.
+- `01_orbit_wars_eda.ipynb` is the reusable environment and baseline analysis
+  workflow;
+- `02_agent_submission.ipynb` is the single active Kaggle submission workflow;
+- `03_replay_review.ipynb` is optional and should exist only if script-first
+  replay review needs visual analysis.
+
+Do not create one notebook per agent version. Agent versions live under
+`agents/<version>/main.py`; the active submission notebook selects a version via
+`CFG["agent_version"]`. Keep version history in `docs/04_agent_version_log.md`,
+not inside notebooks. Move superseded workflow notebooks to `notebooks/archive/`.
 
 ## 4. Notebook Structure
 

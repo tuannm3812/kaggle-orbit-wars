@@ -11,7 +11,7 @@ Current champion:
 
 | Version | Public score | Smoke losses |
 | --- | ---: | --- |
-| `roi_reserve_v2` | `446.5` | Seeds `18`, `24`, `27` |
+| `roi_reserve_v2` | `409.4` | Seeds `18`, `24`, `27` |
 
 ## 2. Official Replay Commands
 

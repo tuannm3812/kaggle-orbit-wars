@@ -10,7 +10,7 @@ Notebook-first workspace for [Kaggle Orbit Wars](https://www.kaggle.com/competit
 - Current champion is **`roi_reserve_v2`**, submitted from notebook output as
   `submission.tar.gz`.
 - **Live Kaggle CLI metadata** on 2026-06-03 shows deadline `2026-06-23 23:59:00`, reward `50,000 Usd`, and user entry status `True`.
-- Latest observed public score for `roi_reserve_v2` is `446.5`.
+- Latest observed public score for `roi_reserve_v2` is `409.4`.
 - Public replay findings are documented in `docs/07_public_replay_findings.md`.
 - Local PyPI `kaggle-environments==1.18.0` does not include `orbit_wars`, so **simulation EDA** should run on Kaggle.
 
@@ -31,19 +31,21 @@ docs/
   README.md
 notebooks/
   01_orbit_wars_eda.ipynb
-  02_roi_reserve_agent.ipynb
+  02_agent_submission.ipynb
+  archive/
+    02_roi_reserve_agent_v1.ipynb
+    03_roi_reserve_agent_v2.ipynb
 kaggle/
   eda/
     kernel-metadata.json
     01_orbit_wars_eda.ipynb
-  roi_reserve_v1/
+  submission/
     kernel-metadata.json
-    02_roi_reserve_agent.ipynb
+    02_agent_submission.ipynb
     main.py
-  roi_reserve_v2/
-    kernel-metadata.json
-    03_roi_reserve_agent_v2.ipynb
-    main.py
+  archive/
+    roi_reserve_v1/
+    roi_reserve_v2/
 agents/
   roi_reserve_v1/
     main.py
@@ -75,11 +77,11 @@ logs/
 3. Push and run the current agent notebook on Kaggle:
 
 ```bash
-/Users/tuanm.nguyen/Library/Python/3.9/bin/kaggle kernels push -p kaggle/roi_reserve_v2
+/Users/tuanm.nguyen/Library/Python/3.9/bin/kaggle kernels push -p kaggle/submission
 ```
 
 4. Submit the generated notebook output after the Kaggle smoke benchmark passes:
 
 ```bash
-/Users/tuanm.nguyen/Library/Python/3.9/bin/kaggle competitions submit orbit-wars -k tuannm3823/orbit-wars-roi-reserve-v2 -f submission.tar.gz -v 1 -m "roi_reserve_v2: orbit-aware aiming, target reservation, stronger reserves"
+/Users/tuanm.nguyen/Library/Python/3.9/bin/kaggle competitions submit orbit-wars -k tuannm3823/orbit-wars-agent-submission -f submission.tar.gz -v 1 -m "roi_reserve_v2: orbit-aware aiming, target reservation, stronger reserves"
 ```

@@ -11,7 +11,7 @@ The installed Kaggle CLI still does not expose the official `episodes` and
 `replay` commands. Replays were fetched through Kaggle's authenticated internal
 episode service after discovering the submission id from the submission table.
 
-Latest observed public score during this review: `446.5`.
+Latest observed public score after the follow-up replay check: `409.4`.
 
 ## 2. Episodes Reviewed
 

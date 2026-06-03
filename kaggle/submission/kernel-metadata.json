@@ -1,0 +1,15 @@
+{
+  "id": "tuannm3823/orbit-wars-agent-submission",
+  "title": "Orbit Wars Agent Submission",
+  "code_file": "02_agent_submission.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_internet": false,
+  "dataset_sources": [],
+  "competition_sources": [
+    "orbit-wars"
+  ],
+  "kernel_sources": []
+}
