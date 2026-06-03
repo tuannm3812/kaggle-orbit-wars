@@ -3,7 +3,7 @@
 ## 1. Immediate Goal
 
 Build v3 from `roi_reserve_v2` episode evidence. The current champion has
-latest observed public score `423.1` and adds **target ROI**, **source reserves**, **sun path
+latest observed public score `446.5` and adds **target ROI**, **source reserves**, **sun path
 rejection**, **orbit-aware aiming**, and **target reservation**.
 
 ## 2. Current Evidence
@@ -41,51 +41,57 @@ planets.
 | Win rate | `90.0%` |
 | Run errors | `0` |
 
-Remaining v2 smoke losses are seeds `18`, `24`, and `27`. The current Kaggle
-CLI/API cannot fetch public episode replays from this environment, and no replay
-files are local yet, so the immediate strategy should use these benchmark losses
-as the evidence base while we wait for downloaded public replays.
+Remaining v2 smoke losses are seeds `18`, `24`, and `27`.
+
+Public replay review is now available in `docs/07_public_replay_findings.md`.
+Reviewed public losses show the same broad weakness as the smoke losses, but
+with stronger evidence: v2 often falls behind in **production** by the first 40
+turns, then either gets eliminated or loses by a large **ship-count gap**.
 
 The loss profile points to **strategic weakness**, not action-format or runtime
 failure:
 
-- v2 wins 27/30 against `random`, but the public score remains far below strong
-  leaderboard agents, so the random smoke benchmark is useful for regressions
-  but not sufficient for strength.
-- Remaining loss seeds are heavy on **orbiting geometry** and include hard
-  collapses where the agent is eliminated or nearly eliminated.
-- The v2 policy captures attractive targets, but it does not model **incoming
-  enemy fleets**, **contested arrivals**, **reinforcement**, or source planets
-  that should stop launching because they are under threat.
+- v2 wins 27/30 against `random`, but public replays show that the random smoke
+  benchmark is useful for regressions, not sufficient for competitive strength.
+- v2 starts with a fixed **20-ship reserve** while home planets begin with
+  `10` ships, so low-production starts can wait too long before first capture.
+- v2 frequently selects **far targets** with long travel times; in reviewed
+  public losses, median target travel time is about `31` turns.
+- v2 does not model **incoming enemy fleets**, **contested arrivals**,
+  **reinforcement**, or source planets that should stop launching because they
+  are under threat.
 
 ## 3. Next Work Items
 
-1. **Episode monitoring**
-   Inspect `roi_reserve_v2` episodes after they are available. Use
-   `docs/06_replay_review_workflow.md` and keep raw replay files under
-   `replays/`.
+1. **Opening tempo reserve**
+   Replace the fixed early reserve with a tempo-aware reserve. Low-production
+   homes need earlier captures; high-production homes can afford a stronger
+   reserve.
 
-2. **Replay diagnostics**
-   Inspect submitted-game wins and losses, plus v2 smoke-test loss seeds `18`,
-   `24`, and `27`. Start with `scripts/replay_diagnostics.py`, not a new
-   notebook.
+2. **Travel-time cap**
+   Penalize or skip targets whose capture travel time is too high before we own
+   a stable production base.
 
-3. **Defense and incoming fleets**
+3. **Local expansion first**
+   Prefer nearby neutral captures during the opening, even when their raw
+   production/ship ROI is lower.
+
+4. **Defense and incoming fleets**
    Add incoming-threat checks before launching from exposed planets. This should
    be the next model change before further target-score calibration.
 
-4. **Contested target cost**
+5. **Contested target cost**
    Estimate whether enemy ships can arrive before or near our capture time, then
    increase required ships or skip the target.
 
-5. **Reinforcement**
+6. **Reinforcement**
    Move spare ships from safe low-value planets toward threatened high-production
    owned planets.
 
-6. **Comet policy**
+7. **Comet policy**
    Ignore or capture comets based on remaining lifetime and travel cost.
 
-7. **Kaggle smoke run**
+8. **Kaggle smoke run**
    Run the same 30 seeds against `random` and compare against `roi_reserve_v2`.
 
 ## 4. Evaluation Checklist

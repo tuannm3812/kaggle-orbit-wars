@@ -7,8 +7,11 @@ Notebook-first workspace for [Kaggle Orbit Wars](https://www.kaggle.com/competit
 ## Current State
 
 - **Official starter files** downloaded with the Kaggle CLI.
-- **No account submissions** yet.
+- Current champion is **`roi_reserve_v2`**, submitted from notebook output as
+  `submission.tar.gz`.
 - **Live Kaggle CLI metadata** on 2026-06-03 shows deadline `2026-06-23 23:59:00`, reward `50,000 Usd`, and user entry status `True`.
+- Latest observed public score for `roi_reserve_v2` is `446.5`.
+- Public replay findings are documented in `docs/07_public_replay_findings.md`.
 - Local PyPI `kaggle-environments==1.18.0` does not include `orbit_wars`, so **simulation EDA** should run on Kaggle.
 
 ## Repository Layout
@@ -23,6 +26,8 @@ docs/
   03_eda_insights.md
   04_agent_version_log.md
   05_next_steps.md
+  06_replay_review_workflow.md
+  07_public_replay_findings.md
   README.md
 notebooks/
   01_orbit_wars_eda.ipynb

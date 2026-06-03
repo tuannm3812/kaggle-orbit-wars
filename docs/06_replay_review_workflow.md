@@ -11,7 +11,7 @@ Current champion:
 
 | Version | Public score | Smoke losses |
 | --- | ---: | --- |
-| `roi_reserve_v2` | `423.1` | Seeds `18`, `24`, `27` |
+| `roi_reserve_v2` | `446.5` | Seeds `18`, `24`, `27` |
 
 ## 2. Official Replay Commands
 
@@ -60,10 +60,10 @@ replays/roi_reserve_v2/
 logs/roi_reserve_v2/
 ```
 
-Current local check: no replay JSON or HTML files are available under
-`replays/`, `logs/`, or `outputs/`. Until public episode replay files are
-downloaded, loss diagnosis should be labeled as **benchmark-derived**, not
-replay-confirmed.
+Current local status: public replay JSON for `roi_reserve_v2` submission
+`53322680` has been downloaded under ignored path `replays/roi_reserve_v2/`.
+Replay-derived findings are curated in `docs/07_public_replay_findings.md`.
+Keep raw replay files and generated diagnostics out of git.
 
 ## 4. Diagnostic Command
 
