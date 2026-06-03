@@ -1,0 +1,15 @@
+{
+  "id": "tuannm3823/orbit-wars-roi-reserve-v1",
+  "title": "Orbit Wars ROI Reserve v1",
+  "code_file": "02_roi_reserve_agent.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_internet": false,
+  "dataset_sources": [],
+  "competition_sources": [
+    "orbit-wars"
+  ],
+  "kernel_sources": []
+}

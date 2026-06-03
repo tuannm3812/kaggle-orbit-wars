@@ -26,10 +26,20 @@ docs/
   README.md
 notebooks/
   01_orbit_wars_eda.ipynb
+  02_roi_reserve_agent.ipynb
 kaggle/
   eda/
     kernel-metadata.json
     01_orbit_wars_eda.ipynb
+  roi_reserve_v1/
+    kernel-metadata.json
+    02_roi_reserve_agent.ipynb
+    main.py
+agents/
+  roi_reserve_v1/
+    main.py
+tests/
+  test_roi_reserve_agent.py
 data/
   raw/
   processed/
@@ -38,23 +48,23 @@ replays/
 logs/
 ```
 
-## First Workflow
+## Current Workflow
 
 1. Review `docs/01_competition_instructions.md`.
-2. Push and run the EDA notebook on Kaggle:
+2. Push and run the EDA notebook on Kaggle when the baseline needs refreshing:
 
 ```bash
 /Users/tuanm.nguyen/Library/Python/3.9/bin/kaggle kernels push -p kaggle/eda
 ```
 
-3. Check run status:
+3. Push and run the first agent notebook on Kaggle:
 
 ```bash
-/Users/tuanm.nguyen/Library/Python/3.9/bin/kaggle kernels status tuannm3812/orbit-wars-eda-baseline
+/Users/tuanm.nguyen/Library/Python/3.9/bin/kaggle kernels push -p kaggle/roi_reserve_v1
 ```
 
-4. Download outputs after the run completes:
+4. Submit the generated `main.py` after the Kaggle smoke benchmark passes:
 
 ```bash
-/Users/tuanm.nguyen/Library/Python/3.9/bin/kaggle kernels output tuannm3812/orbit-wars-eda-baseline -p outputs/kaggle_eda
+/Users/tuanm.nguyen/Library/Python/3.9/bin/kaggle competitions submit orbit-wars -f outputs/kaggle_roi_reserve_v1_v3/main.py -m "roi_reserve_v1: ROI target scoring, source reserves, sun-safe paths"
 ```

@@ -2,12 +2,17 @@
 
 ## 1. Submission State
 
-As of 2026-06-03, the **Kaggle CLI** reports **no submissions** for this account in
-Orbit Wars.
+As of 2026-06-03, account `tuannm3823` has one Orbit Wars submission.
 
 ```bash
 /Users/tuanm.nguyen/Library/Python/3.9/bin/kaggle competitions submissions orbit-wars
 ```
+
+Latest submission:
+
+| File | Kaggle timestamp | Description | Status | Public score |
+| --- | --- | --- | --- | --- |
+| `main.py` | `2026-06-03 08:52:34` | `roi_reserve_v1: ROI target scoring, source reserves, sun-safe paths` | `SubmissionStatus.PENDING` | Pending |
 
 Current public leaderboard reference from the same session:
 
@@ -23,6 +28,7 @@ new episodes are played.
 | Version | Source | Submitted | Public score | Main change | Decision |
 | --- | --- | --- | ---: | --- | --- |
 | Starter EDA | `kaggle/eda/01_orbit_wars_eda.ipynb` | No | N/A | Official nearest-planet starter run against random for 30 seeds. | Keep as environment and baseline reference. |
+| `roi_reserve_v1` | `kaggle/roi_reserve_v1/02_roi_reserve_agent.ipynb` / `agents/roi_reserve_v1/main.py` | Yes | Pending | Production-aware ROI target scoring, source reserve, and sun-path rejection. Kaggle smoke benchmark: 25 wins, 5 losses, 0 errors over 30 seeds vs `random`. | First submitted candidate. Monitor public score and episodes before v2. |
 
 ## 3. Logging Rules
 

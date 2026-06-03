@@ -2,22 +2,22 @@
 
 ## Goal
 
-Orbit Wars has no tabular train/test dataset. **EDA** means **environment exploration**, **map-seed profiling**, starter-agent behavior analysis, replay/log analysis, and leaderboard tracking.
+Use EDA only to answer questions that affect agent design. For Orbit Wars, the
+important evidence is **runtime availability**, **starter baseline quality**,
+**map-seed profile**, and **failure patterns**.
 
-## Notebook 01: Rules And Environment EDA
+## Notebook 01: Baseline Evidence
 
 Path: `notebooks/01_orbit_wars_eda.ipynb`
 
 Kaggle path: `kaggle/eda/01_orbit_wars_eda.ipynb`
 
-Main questions:
+Key questions:
 
 1. Does the **Kaggle runtime** expose `orbit_wars` through `kaggle_environments.make`?
-2. What configuration does the runtime report?
-3. Across seeds, how many planets spawn and what is the production/garrison distribution?
-4. How many planets are static versus orbiting?
-5. How often does the starter agent beat random?
-6. What map features correlate with starter wins and losses?
+2. Can the starter run a clean 30-seed benchmark against `random`?
+3. How much orbiting and high-production terrain appears in the seed set?
+4. Which starter weaknesses should the first agent target?
 
 Expected outputs:
 
@@ -26,7 +26,7 @@ Expected outputs:
 | `eda_environment_info.json` | Runtime, config, and import status. |
 | `eda_seed_summary.csv` | One row per simulated seed. |
 | `eda_planets_by_seed.csv` | Planet-level initial map profile. |
-| `eda_readme_findings.md` | Human-readable summary for docs. |
+| `eda_readme_findings.md` | Short Markdown summary for strategy handoff. |
 
 ## Kaggle CLI Workflow
 
@@ -39,19 +39,19 @@ Push and run the EDA notebook:
 Check status:
 
 ```bash
-/Users/tuanm.nguyen/Library/Python/3.9/bin/kaggle kernels status tuannm3812/orbit-wars-eda-baseline
+/Users/tuanm.nguyen/Library/Python/3.9/bin/kaggle kernels status tuannm3823/orbit-wars-eda-baseline
 ```
 
 Download outputs:
 
 ```bash
-/Users/tuanm.nguyen/Library/Python/3.9/bin/kaggle kernels output tuannm3812/orbit-wars-eda-baseline -p outputs/kaggle_eda
+/Users/tuanm.nguyen/Library/Python/3.9/bin/kaggle kernels output tuannm3823/orbit-wars-eda-baseline -p outputs/kaggle_eda_tuannm3823
 ```
 
-## How Insights Feed Strategy
+## Strategy Handoff
 
-- If **high-production static planets** are usually near home, prioritize static expansion first.
-- If **orbiting planets** are frequently high production, add future-position targeting early.
-- If starter losses come from **over-draining the home planet**, add reserve thresholds.
-- If starter losses come from **slow captures**, send larger fleets for speed, not only exact capture cost.
-- If **sun-blocked routes** are common, implement segment-to-circle collision checks before attack tuning.
+- The first agent should not copy nearest-target behavior.
+- Add **target ROI** before expanding aggression.
+- Add **source reserves** before sending larger fleets.
+- Add **orbit-aware aiming** for moving high-production planets.
+- Add **sun-path rejection** before attack tuning.
