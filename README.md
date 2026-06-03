@@ -35,11 +35,18 @@ kaggle/
     kernel-metadata.json
     02_roi_reserve_agent.ipynb
     main.py
+  roi_reserve_v2/
+    kernel-metadata.json
+    03_roi_reserve_agent_v2.ipynb
+    main.py
 agents/
   roi_reserve_v1/
     main.py
+  roi_reserve_v2/
+    main.py
 tests/
   test_roi_reserve_agent.py
+  test_roi_reserve_agent_v2.py
 data/
   raw/
   processed/
@@ -57,14 +64,14 @@ logs/
 /Users/tuanm.nguyen/Library/Python/3.9/bin/kaggle kernels push -p kaggle/eda
 ```
 
-3. Push and run the first agent notebook on Kaggle:
+3. Push and run the current agent notebook on Kaggle:
 
 ```bash
-/Users/tuanm.nguyen/Library/Python/3.9/bin/kaggle kernels push -p kaggle/roi_reserve_v1
+/Users/tuanm.nguyen/Library/Python/3.9/bin/kaggle kernels push -p kaggle/roi_reserve_v2
 ```
 
-4. Submit the generated `main.py` after the Kaggle smoke benchmark passes:
+4. Submit the generated notebook output after the Kaggle smoke benchmark passes:
 
 ```bash
-/Users/tuanm.nguyen/Library/Python/3.9/bin/kaggle competitions submit orbit-wars -f outputs/kaggle_roi_reserve_v1_v3/main.py -m "roi_reserve_v1: ROI target scoring, source reserves, sun-safe paths"
+/Users/tuanm.nguyen/Library/Python/3.9/bin/kaggle competitions submit orbit-wars -k tuannm3823/orbit-wars-roi-reserve-v2 -f submission.tar.gz -v 1 -m "roi_reserve_v2: orbit-aware aiming, target reservation, stronger reserves"
 ```

@@ -2,9 +2,10 @@
 
 ## 1. Immediate Goal
 
-Monitor `roi_reserve_v1` after submission, then build v2 from replay evidence.
-The first submitted agent already adds **target ROI**, **source reserves**, and
-**sun path rejection**.
+Monitor `roi_reserve_v2` after notebook-output submission, then build v3 from
+episode evidence. The current submitted agent adds **target ROI**, **source
+reserves**, **sun path rejection**, **orbit-aware aiming**, and **target
+reservation**.
 
 ## 2. Current Evidence
 
@@ -32,26 +33,32 @@ planets.
 | Win rate | `83.3%` |
 | Run errors | `0` |
 
+`roi_reserve_v2` Kaggle smoke benchmark:
+
+| Metric | Value |
+| --- | ---: |
+| Wins | `27` |
+| Losses | `3` |
+| Win rate | `90.0%` |
+| Run errors | `0` |
+
 ## 3. Next Work Items
 
 1. **Submission monitoring**
-   Wait for `roi_reserve_v1` public score and episodes.
+   Wait for `roi_reserve_v2` public score and episodes.
 
 2. **Replay diagnostics**
-   Inspect submitted-game wins and losses, plus smoke-test loss seeds from
-   `roi_reserve_v1`.
+   Inspect submitted-game wins and losses, plus v2 smoke-test loss seeds `18`,
+   `24`, and `27`.
 
-3. **Orbit-aware targeting v2**
-   Predict moving planet position before launch-angle calculation.
+3. **Defense and incoming fleets**
+   Add incoming-threat checks before launching from exposed planets.
 
-4. **Defense and incoming fleets**
-   Add basic incoming-threat checks before launching from exposed planets.
-
-5. **Comet policy**
+4. **Comet policy**
    Ignore or capture comets based on remaining lifetime and travel cost.
 
-6. **Kaggle smoke run**
-   Run the same 30 seeds against `random` and compare against `roi_reserve_v1`.
+5. **Kaggle smoke run**
+   Run the same 30 seeds against `random` and compare against `roi_reserve_v2`.
 
 ## 4. Evaluation Checklist
 
@@ -62,11 +69,17 @@ Before submitting the next candidate:
 - action format is always list-of-lists;
 - source planets are not overdrawn;
 - sun-crossing launches are rejected;
-- at least 30-seed random benchmark is recorded and compared with `roi_reserve_v1`;
+- at least 30-seed random benchmark is recorded and compared with `roi_reserve_v2`;
 - version log is updated;
 - known loss seeds are inspected.
 
 ## 5. Submission Rule
 
+Submit through the **notebook output** path, not a local `main.py` upload:
+
+```bash
+/Users/tuanm.nguyen/Library/Python/3.9/bin/kaggle competitions submit orbit-wars -k tuannm3823/<kernel-slug> -f submission.tar.gz -v <version> -m "<message>"
+```
+
 Do not submit a speculative rewrite until it has passed the **Kaggle smoke run**
-and has a clear **expected behavior difference** from `roi_reserve_v1`.
+and has a clear **expected behavior difference** from `roi_reserve_v2`.
