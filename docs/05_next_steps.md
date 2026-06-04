@@ -208,8 +208,8 @@ Keep the agent ladder small:
    when it was pushed too far.
 
 3. **Next candidate**
-   `roi_reserve_v6` now exists at `agents/roi_reserve_v6/main.py`. It keeps the
-   v3 opening shape and adds only one new improvement at a time:
+   `roi_reserve_v6` is now submitted from `agents/roi_reserve_v6/main.py`. It
+   keeps the v3 opening shape and adds only one new improvement at a time:
    - bounded regroup for surplus ships in pressure hotspots;
    - a milder source-safety gate than v5;
    - no extra notebook unless the model shape changes materially.
