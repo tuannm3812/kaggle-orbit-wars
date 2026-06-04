@@ -6,6 +6,9 @@ As of 2026-06-04, account `tuannm3823` has five Orbit Wars submissions and
 account `tuannm3812` has the `roi_reserve_v5` challenger submission under early
 public evaluation.
 
+A second `roi_reserve_v5` regroup-pass submission (`53363032`) is pending on
+`tuannm3812` and has no public score yet.
+
 ```bash
 /Users/tuanm.nguyen/Library/Python/3.9/bin/kaggle competitions submissions orbit-wars
 ```
@@ -71,3 +74,4 @@ Use descriptive, stable names:
 - `sun_safe_roi_v1`
 - `defense_reinforce_v1`
 - `comet_roi_v1`
+- `roi_reserve_v6`

@@ -192,3 +192,33 @@ Submit through the **notebook output** path, not a local `main.py` upload:
 
 Do not submit a speculative rewrite until it has passed the **Kaggle smoke run**
 and has a clear **expected behavior difference** from `roi_reserve_v2`.
+
+## 9. Agent Setup
+
+Keep the agent ladder small:
+
+1. **Baseline**
+   `roi_reserve_v3` stays the reference point because it is still the best
+   mature public score at `509.9`.
+
+2. **Archive**
+   `roi_reserve_v5` stays as the combat-survival archive. Its public score is
+   `415.4`, and the replay set shows that the extra safety logic was too costly
+   when it was pushed too far.
+
+3. **Next candidate**
+   Build `roi_reserve_v6` from the v3 opening shape, then add only one new
+   improvement at a time:
+   - bounded regroup for surplus ships in pressure hotspots;
+   - a milder source-safety gate than v5;
+   - no extra notebook unless the model shape changes materially.
+
+4. **Ablations**
+   If `roi_reserve_v6` moves in the wrong direction, split it into two
+   single-change variants instead of tuning everything together:
+   - `v6_source_safety`
+   - `v6_regroup`
+
+This setup makes score movement easier to read: if a variant drops, the replay
+delta tells us whether the issue is over-defense, over-regrouping, or the
+opening itself.
