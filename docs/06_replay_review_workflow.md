@@ -2,16 +2,17 @@
 
 ## 1. Objective
 
-Use replay review to explain **why the current champion loses** before writing
-v3 code. Keep this workflow script-first: raw replay files and generated
+Use replay review to explain **why submitted agents lose** before writing the
+next candidate. Keep this workflow script-first: raw replay files and generated
 diagnostics stay out of git, while only durable strategy lessons are curated
 into docs.
 
-Current champion:
+Current reviewed submissions:
 
 | Version | Public score | Smoke losses |
 | --- | ---: | --- |
-| `roi_reserve_v2` | `409.4` | Seeds `18`, `24`, `27` |
+| `roi_reserve_v2` | `438.3` | Best smoke: seed `27` |
+| `roi_reserve_v3` | `547.5` after early games | Seeds `0`, `19` |
 
 ## 2. Official Replay Commands
 
@@ -58,6 +59,8 @@ under ignored paths:
 ```text
 replays/roi_reserve_v2/
 logs/roi_reserve_v2/
+replays/roi_reserve_v3/
+logs/roi_reserve_v3/
 ```
 
 Current local status: public replay JSON for `roi_reserve_v2` submission
@@ -93,7 +96,7 @@ For each loss, answer only decision-relevant questions:
    over-commitment?
 6. Were high-production owned planets left under-defended while low-value
    planets launched attacks?
-7. What is the smallest v3 behavior change that should prevent the pattern?
+7. What is the smallest next behavior change that should prevent the pattern?
 
 ## 6. Replay Review Checklist
 
@@ -113,9 +116,10 @@ the version log:
 
 ## 7. Benchmark-Derived Loss Notes
 
-`roi_reserve_v2` improves the random smoke benchmark from **25/30** wins to
-**27/30** wins, fixing v1 loss seeds `11` and `17`. The remaining losses are
-seeds `18`, `24`, and `27`.
+`roi_reserve_v2` improved the random smoke benchmark from **25/30** wins to as
+high as **29/30** wins. The replay-reviewed v2 submission still lost public
+games because the random smoke benchmark is a regression check, not an Elo
+proxy.
 
 Key observed patterns:
 
@@ -129,10 +133,11 @@ Key observed patterns:
   incoming-fleet defense, no opponent arrival modeling, and no reinforcement
   behavior.
 
-Most likely v3 direction: add **defense-aware launch gating** and
-**incoming-threat estimation** before changing target calibration. The current
-agent can reserve ships on sources, but it does not know whether a source is
-already threatened or whether a target will be contested before arrival.
+v3 added **defense-aware launch gating**, **incoming-threat estimation**,
+**opening tempo reserve**, and **local-neutral opening preference**. Its first
+public score movement was down from the `600.0` starting score to `547.5`, so
+the next replay review should focus on whether those changes fixed the v2
+opening failures or simply introduced new losses.
 
 ## 8. Notebook Rule
 

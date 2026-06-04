@@ -38,7 +38,7 @@ but the downloadable `README.md` and `agents.md` are the practical references
 for implementation details, local testing, submission packaging, and replay
 commands.
 
-Latest Kaggle CLI check on 2026-06-03:
+Latest Kaggle CLI check on 2026-06-04:
 
 | Item | Value |
 | --- | --- |
@@ -47,7 +47,7 @@ Latest Kaggle CLI check on 2026-06-03:
 | Reward | `50,000 Usd` |
 | Team count | `3695` |
 | User entered | `True` |
-| Latest user submission score | `409.4` |
+| Latest user submission score | `547.5` |
 | Public leaderboard top score | `1785.9` |
 
 Important correction: a third-party mirror showed a later July deadline, but the

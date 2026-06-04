@@ -7,10 +7,12 @@ Notebook-first workspace for [Kaggle Orbit Wars](https://www.kaggle.com/competit
 ## Current State
 
 - **Official starter files** downloaded with the Kaggle CLI.
-- Current champion is **`roi_reserve_v2`**, submitted from notebook output as
-  `submission.tar.gz`.
+- Latest submitted challenger is **`roi_reserve_v3`**, submitted from notebook
+  output as `submission.tar.gz`.
 - **Live Kaggle CLI metadata** on 2026-06-03 shows deadline `2026-06-23 23:59:00`, reward `50,000 Usd`, and user entry status `True`.
-- Latest observed public score for `roi_reserve_v2` is `409.4`.
+- Latest observed public score for `roi_reserve_v3` is `547.5` after dropping
+  from the `600.0` starting score. Treat score movement and replays as the
+  signal, not the initial score.
 - Public replay findings are documented in `docs/07_public_replay_findings.md`.
 - Local PyPI `kaggle-environments==1.18.0` does not include `orbit_wars`, so **simulation EDA** should run on Kaggle.
 
@@ -51,9 +53,13 @@ agents/
     main.py
   roi_reserve_v2/
     main.py
+  roi_reserve_v3/
+    main.py
 tests/
   test_roi_reserve_agent.py
   test_roi_reserve_agent_v2.py
+  test_roi_reserve_agent_v3.py
+  test_submission_notebook.py
   test_replay_diagnostics.py
 scripts/
   replay_diagnostics.py
@@ -83,5 +89,5 @@ logs/
 4. Submit the generated notebook output after the Kaggle smoke benchmark passes:
 
 ```bash
-/Users/tuanm.nguyen/Library/Python/3.9/bin/kaggle competitions submit orbit-wars -k tuannm3823/orbit-wars-agent-submission -f submission.tar.gz -v 1 -m "roi_reserve_v2: orbit-aware aiming, target reservation, stronger reserves"
+/Users/tuanm.nguyen/Library/Python/3.9/bin/kaggle competitions submit orbit-wars -k tuannm3823/orbit-wars-agent-submission -f submission.tar.gz -v <kernel_version> -m "<agent_version>: <short change summary>"
 ```
