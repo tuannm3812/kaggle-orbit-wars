@@ -75,7 +75,7 @@ Remaining v4 smoke loss is seed `0`.
 
 Scoring caution: a fresh Orbit Wars submission can show `600.0` before it has
 played enough public matches. Treat that as a starting rating. v4 moved down to
-`490.4`, so its reinforcement/production-cost changes should be treated as a
+`471.9`, so its reinforcement/production-cost changes should be treated as a
 failed challenger until replays explain the failure. v5 must be judged by public
 score movement and replays, not by the 30/30 random smoke result alone.
 

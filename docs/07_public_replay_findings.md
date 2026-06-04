@@ -28,7 +28,7 @@ GET /api/v1/competitions/episodes/<EPISODE_ID>/replay
 | --- | ---: | ---: | ---: | ---: | ---: |
 | `roi_reserve_v2` | `53322680` | `438.3` then `411.9` for the later v2 notebook submission | 22 | 8 | 14 |
 | `roi_reserve_v3` | `53344107` | `509.9` | 33 | 13 | 20 |
-| `roi_reserve_v4` | `53349976` | `490.4` | 19 | 9 | 10 |
+| `roi_reserve_v4` | `53349976` | `471.9` | 19 | 9 | 10 |
 | `roi_reserve_v5` | `53353907` | `600.0` starting rating | 0 | 0 | 0 |
 
 Important scoring note: the starting score is `600.0`, but public score behaves
