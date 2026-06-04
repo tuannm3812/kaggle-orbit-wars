@@ -142,6 +142,11 @@ failure:
    v5 avoids enemy-owned targets in unstable four-player openings until our
    production base is more stable.
 
+4. **Pressure-based regroup**
+   v5 now adds a limited regroup pass inspired by `slawekbiel/the-producer-agent`:
+   move only surplus ships, prefer nearby pressure hotspots, and keep the source
+   reserve intact.
+
 ## 6. Next Work Items
 
 1. **Replay expansion for v5**
@@ -159,9 +164,10 @@ failure:
 
 4. **RL-inspired feature audit**
    The public PPO tutorial frames each owned planet as a source decision with
-   self, candidate, and global features. Use that structure as an audit checklist
-   for v5 heuristics, not as a reason to add training code before replay evidence
-   supports it.
+   self, candidate, and global features. The Producer agent adds a second
+   checklist: per-planet pressure and a small regroup step. Use both as an audit
+   checklist for v5 heuristics, not as a reason to add training code before replay
+   evidence supports it.
 
 ## 7. Evaluation Checklist
 

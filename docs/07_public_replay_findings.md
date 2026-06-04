@@ -131,6 +131,9 @@ downloaded losses.
 5. Keep opening improvements from v3, but do not create another notebook only
    for calibration. Future notebooks are justified only when agent behavior
    changes around combat valuation, defense, or replay parsing.
+6. Borrow the Producer-style regroup pattern, but keep it bounded: only move
+   surplus ships, only into nearby pressure hotspots, and only after source
+   safety has been checked.
 
 Judge future variants by public score and new replays, not by the 30/30 random
 smoke result alone. v5 reduced some far/enemy targeting symptoms, but its losses

@@ -25,6 +25,10 @@ SOURCE_SURVIVAL_LOOKAHEAD_TURNS = 45
 SOURCE_SURVIVAL_MARGIN = 2
 CONTESTED_TARGET_WINDOW = 10.0
 MULTIPLAYER_STABLE_PRODUCTION = 30
+REGROUP_LOOKAHEAD_TURNS = 8
+REGROUP_PRESSURE_THRESHOLD = 6.0
+REGROUP_MAX_SHIPS_FRAC = 0.5
+REGROUP_MAX_SHIPS_ABS = 14
 
 
 def get_obs_value(obs: Any, name: str, default: Any) -> Any:
@@ -264,6 +268,31 @@ def threatened_planet_ids(player: int, planets: list, fleets: list) -> set:
     return threats
 
 
+def enemy_pressure_by_planet(
+    player: int,
+    my_planets: list,
+    fleets: list,
+    horizon_turns: float = REGROUP_LOOKAHEAD_TURNS,
+) -> dict[int, float]:
+    """Estimate per-planet pressure from visible enemy fleets in the next turns."""
+    pressure: dict[int, float] = {int(planet.id): 0.0 for planet in my_planets}
+    if not my_planets or horizon_turns <= 0:
+        return pressure
+    horizon = int(horizon_turns)
+    for fleet in fleets:
+        if int(fleet.owner) == player or int(fleet.owner) < 0:
+            continue
+        for planet in my_planets:
+            eta = fleet_eta_to_planet(fleet, planet, horizon)
+            if eta is None:
+                continue
+            decay = 1.0 - (float(eta) / float(horizon))
+            if decay <= 0:
+                continue
+            pressure[int(planet.id)] += float(fleet.ships) * decay
+    return pressure
+
+
 def projected_owned_garrison(
     planet: Any,
     player: int,
@@ -382,6 +411,109 @@ def enemy_support_pressure(
         pressure += float(planet.production) * max(1.0, travel_turns - support_eta + CONTESTED_TARGET_WINDOW)
         pressure += max(0.0, float(planet.ships) - source_reserve(planet, 4)) * 0.35
     return int(math.ceil(pressure))
+
+
+def build_regroup_moves(
+    player: int,
+    my_planets: list,
+    planets: list,
+    fleets: list,
+    angular_velocity: float,
+    used_source_ids: set,
+    threatened_ids: set,
+) -> list:
+    """Move idle ships from safe surplus sources into pressure hotspots.
+
+    This is a low-cost producer-inspired regroup pass. It is intentionally limited
+    to single-step redistributions, so it can only correct early midgame pressure
+    imbalances, not perform deep logistic planning.
+    """
+    if len(my_planets) < 2:
+        return []
+
+    pressure = enemy_pressure_by_planet(
+        player,
+        my_planets=my_planets,
+        fleets=fleets,
+        horizon_turns=REGROUP_LOOKAHEAD_TURNS,
+    )
+    pressure_targets = sorted(
+        [(planet_id, value) for planet_id, value in pressure.items() if value >= REGROUP_PRESSURE_THRESHOLD],
+        key=lambda item: item[1],
+        reverse=True,
+    )
+    if not pressure_targets:
+        return []
+
+    planet_lookup = {int(planet.id): planet for planet in my_planets}
+    movable_planets = [
+        planet
+        for planet in my_planets
+        if int(planet.id) not in used_source_ids
+        and int(planet.id) not in threatened_ids
+    ]
+    if not movable_planets:
+        return []
+
+    owned_count = len(my_planets)
+    mutable_ships = {int(planet.id): int(planet.ships) for planet in my_planets}
+    moves: list = []
+
+    for target_id, total_pressure in pressure_targets:
+        target = planet_lookup.get(target_id)
+        if target is None:
+            continue
+        target_reserve = source_reserve(target, owned_count)
+        current_surplus = max(0, mutable_ships[target_id] - target_reserve)
+        needed = max(0, int(math.ceil(total_pressure * 0.6)) - current_surplus)
+        if needed <= 0:
+            continue
+
+        donors = sorted(
+            [
+                planet
+                for planet in movable_planets
+                if int(planet.id) not in {target_id}
+                and mutable_ships[int(planet.id)] > source_reserve(planet, owned_count)
+            ],
+            key=lambda donor: distance(donor, target),
+        )
+        for donor in donors:
+            if needed <= 0:
+                break
+            donor_id = int(donor.id)
+            donor_ships = mutable_ships.get(donor_id, int(donor.ships))
+            donor_reserve = source_reserve(donor, owned_count)
+            donor_excess = max(0, donor_ships - donor_reserve)
+            if donor_excess <= 1:
+                continue
+
+            transfer = max(
+                1,
+                min(
+                    int(donor_excess * REGROUP_MAX_SHIPS_FRAC),
+                    needed,
+                    REGROUP_MAX_SHIPS_ABS,
+                ),
+            )
+            if transfer <= 0:
+                continue
+            if not source_survives_launch(donor, player, fleets, transfer, owned_count):
+                continue
+
+            aim_target = predicted_target(donor, target, transfer, angular_velocity)
+            if crosses_sun(donor, aim_target):
+                continue
+            if distance(donor, target) / fleet_speed(transfer) > REGROUP_LOOKAHEAD_TURNS:
+                continue
+
+            moves.append([donor_id, launch_angle(donor, aim_target), transfer])
+            mutable_ships[donor_id] -= transfer
+            mutable_ships[target_id] += transfer
+            needed -= transfer
+            used_source_ids.add(donor_id)
+
+    return moves
 
 
 def capture_ships_needed(source: Any, target: Any, seed_ships: int, player: int, planets: list) -> int:
@@ -589,8 +721,9 @@ def agent(obs: Any) -> list:
         )
         moves.extend(reinforcement_moves)
         ordered_sources = sorted(my_planets, key=lambda p: (int(p.ships), int(p.production)), reverse=True)
+        used_source_ids = set(reinforcement_sources)
         for source in ordered_sources:
-            if int(source.id) in reinforcement_sources:
+            if int(source.id) in used_source_ids:
                 continue
             if int(source.id) in threatened_ids:
                 continue
@@ -611,6 +744,19 @@ def agent(obs: Any) -> list:
             target, aim_target, ships = chosen
             reserved_target_ids.add(int(target.id))
             moves.append([int(source.id), launch_angle(source, aim_target), int(ships)])
+            used_source_ids.add(int(source.id))
+
+        moves.extend(
+            build_regroup_moves(
+                player,
+                my_planets=my_planets,
+                planets=planets,
+                fleets=fleets,
+                angular_velocity=angular_velocity,
+                used_source_ids=used_source_ids,
+                threatened_ids=threatened_ids,
+            )
+        )
         return moves
     except Exception:
         return []
