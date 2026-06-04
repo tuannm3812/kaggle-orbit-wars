@@ -2,12 +2,10 @@
 
 ## 1. Immediate Goal
 
-Review `roi_reserve_v4` public losses before changing the model again. v4 moved
-from the `600.0` starting score down to `442.1`, below v3's `505.8`, so the
-active submission notebook is rolled back to v3. v4 added **timed
-reinforcement** and **enemy-production capture cost** on top of v3's **opening
-tempo reserve**, **local-neutral opening preference**, **travel-time filtering**,
-and **incoming-threat launch holds**.
+Wait for `roi_reserve_v5` score movement and replay evidence before changing
+the model again. v5 is submitted on account `tuannm3812` as a challenger at its
+`600.0` starting rating, while `roi_reserve_v3` remains the best completed
+baseline on `tuannm3823`.
 
 ## 2. Current Evidence
 
@@ -66,15 +64,26 @@ Remaining v3 smoke losses are seeds `0` and `19`.
 
 Remaining v4 smoke loss is seed `0`.
 
+`roi_reserve_v5` Kaggle-hosted smoke benchmark:
+
+| Metric | Value |
+| --- | ---: |
+| Wins | `30` |
+| Losses | `0` |
+| Win rate | `100.0%` |
+| Run errors | `0` |
+
 Scoring caution: a fresh Orbit Wars submission can show `600.0` before it has
 played enough public matches. Treat that as a starting rating. v4 moved down to
-`442.1`, so its reinforcement/production-cost changes should be treated as a
-failed challenger until replays explain the failure.
+`490.4`, so its reinforcement/production-cost changes should be treated as a
+failed challenger until replays explain the failure. v5 must be judged by public
+score movement and replays, not by the 30/30 random smoke result alone.
 
 Public replay review is now available in `docs/07_public_replay_findings.md`.
 Reviewed public losses show the same broad weakness as the smoke losses, but
-with stronger evidence: v2 often falls behind in **production** by the first 40
-turns, then either gets eliminated or loses by a large **ship-count gap**.
+with stronger evidence: submitted agents often fall behind in **production** or
+lose control in the **midgame**, then either get eliminated or lose by a large
+**ship-count gap**.
 
 The loss profile points to **strategic weakness**, not action-format or runtime
 failure:
@@ -119,34 +128,41 @@ failure:
    mechanics. v4 ports those ideas narrowly without copying the full public
    agent.
 
-## 5. Next Work Items
+## 5. Completed v5 Work Items
 
-1. **Score movement check for v4**
-   v4 currently sits at `442.1` after dropping from `600.0`, below v3's
-   `505.8`. Keep v3 active until v4 losses are understood.
+1. **Source safety after launch**
+   v5 projects visible incoming fleets after proposed ship spend and skips
+   launches that would leave the source unsafe.
 
-2. **Replay review for v4**
-   Compare public wins and losses against v3 and v2 failure modes: opening
-   timing, reinforcement success, over-defense, and enemy-production attacks.
+2. **Contested target pressure**
+   v5 increases enemy-target capture cost using nearby visible enemy production
+   and spare ships that can contest the arrival window.
 
-3. **Contested target cost**
-   Estimate whether enemy ships can arrive before or near our capture time, then
-   increase required ships or skip the target.
+3. **Multiplayer restraint**
+   v5 avoids enemy-owned targets in unstable four-player openings until our
+   production base is more stable.
 
-4. **Reinforcement**
-   Move spare ships from safe low-value planets toward threatened high-production
-   owned planets.
+## 6. Next Work Items
 
-5. **Comet policy**
+1. **Score movement check for v5**
+   Wait for the `tuannm3812` v5 public score to move from its `600.0` starting
+   rating. Do not promote it over v3 until score movement is meaningful.
+
+2. **Replay review for v5**
+   Download v5 public replays once episodes are available. Compare wins and
+   losses against v3/v4 failure modes: midgame control collapse, over-defense,
+   source safety, and contested enemy attacks.
+
+3. **Comet policy**
    Ignore or capture comets based on remaining lifetime and travel cost.
 
-6. **RL-inspired feature audit**
+4. **RL-inspired feature audit**
    The public PPO tutorial frames each owned planet as a source decision with
    self, candidate, and global features. Use that structure as an audit checklist
-   for v4 heuristics, not as a reason to add training code before replay evidence
+   for v5 heuristics, not as a reason to add training code before replay evidence
    supports it.
 
-## 6. Evaluation Checklist
+## 7. Evaluation Checklist
 
 Before submitting the next candidate:
 
@@ -159,12 +175,12 @@ Before submitting the next candidate:
 - version log is updated;
 - known loss seeds are inspected.
 
-## 7. Submission Rule
+## 8. Submission Rule
 
 Submit through the **notebook output** path, not a local `main.py` upload:
 
 ```bash
-/Users/tuanm.nguyen/Library/Python/3.9/bin/kaggle competitions submit orbit-wars -k tuannm3823/<kernel-slug> -f submission.tar.gz -v <version> -m "<message>"
+/Users/tuanm.nguyen/Library/Python/3.9/bin/kaggle competitions submit orbit-wars -f outputs/<kaggle-output>/submission.tar.gz -m "<message>"
 ```
 
 Do not submit a speculative rewrite until it has passed the **Kaggle smoke run**

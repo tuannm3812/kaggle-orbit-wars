@@ -2,146 +2,132 @@
 
 ## 1. Scope
 
-Reviewed `roi_reserve_v2` public episodes for submission `53322680` on
-2026-06-03. Raw replay JSON files are stored under ignored local path
-`replays/roi_reserve_v2/`. Generated analysis tables are stored under ignored
-local path `outputs/replay_diagnostics/roi_reserve_v2_public/`.
+Reviewed downloaded public replay JSON for `tuannm3823` submissions on
+2026-06-04. Raw replay files are stored under ignored local paths:
 
-The installed Kaggle CLI still does not expose the official `episodes` and
-`replay` commands. Replays were fetched through Kaggle's authenticated internal
-episode service after discovering the submission id from the submission table.
+- `replays/roi_reserve_v2/`
+- `replays/roi_reserve_v3/`
+- `replays/roi_reserve_v4/`
 
-Latest observed public score after the follow-up replay check: `409.4`.
+Generated analysis tables are stored under ignored local path
+`outputs/replay_outcome_analysis/`. The reusable analyzer is tracked at
+`scripts/replay_outcome_analysis.py`.
 
-## 2. Episodes Reviewed
+The installed Kaggle CLI still does not expose `episodes` or `replay` commands.
+Submission ids were read from the Kaggle API submission objects, then replays
+were fetched through Kaggle's authenticated episode endpoints:
 
-| Episode | Result | Players | Turns | Final planets | Final production | Final score proxy | Opponent score proxy |
-| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| `78602185` | Loss | 2 | 477 | 0 | 0 | 0 | 5021 |
-| `78602430` | Loss | 2 | 500 | 17 | 28 | 1269 | 18372 |
-| `78602790` | Loss | 2 | 174 | 0 | 0 | 0 | 7997 |
-| `78603520` | Loss | 2 | 500 | 17 | 37 | 1629 | 9163 |
-| `78603878` | Loss | 2 | 173 | 0 | 0 | 0 | 8026 |
-| `78604250` | Loss | 2 | 262 | 0 | 0 | 0 | 2638 |
-| `78604644` | Loss | 2 | 218 | 0 | 0 | 0 | 4923 |
-| `78605030` | Loss | 2 | 167 | 0 | 0 | 0 | 3746 |
-| `78605418` | Loss | 4 | 500 | 0 | 0 | 0 | 9828 |
-| `78605651` | Loss | 4 | 428 | 0 | 0 | 0 | 4050 |
-| `78607946` | Win | 2 | 428 | 28 | 72 | 3556 | 0 |
+```bash
+GET /api/i/competitions.EpisodeService/ListEpisodes?submissionId=<SUBMISSION_ID>
+GET /api/v1/competitions/episodes/<EPISODE_ID>/replay
+```
 
-## 3. Main Finding
+## 2. Current Score Context
 
-The public losses are **strategy failures**, not format or runtime failures.
-Most losses end in elimination, and the two non-elimination losses still have
-large **ship-count deficits** despite owning a comparable number of planets.
-
-Across the 10 reviewed losses:
-
-| Metric | Average |
-| --- | ---: |
-| Final planets | `3.4` |
-| Final production | `6.5` |
-| Final score proxy | `289.8` |
-| Opponent score proxy | `7376.4` |
-| Peak planets | `7.8` |
-| Peak production | `18.4` |
-| First turn trailing production | `35.8` |
-| First turn below half opponent score | `60.3` |
-
-This means the agent usually falls behind before the midgame. Later behavior is
-mostly trying to recover from an already-lost economic position.
-
-## 4. Opening Weakness
-
-Every game starts with a home planet at `10` ships, while v2's early
-`source_reserve` is at least `20`. That means v2 has no affordable launch at
-turn `0` in the reviewed losses.
-
-First action timing in losses:
-
-| Episode | Home production | First action | First capture | Peak planets | Peak production |
+| Agent | Submission id | Public score | Reviewed public replays | Wins | Losses |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| `78602185` | 1 | 20 | 76 | 5 | 12 |
-| `78602430` | 5 | 5 | 13 | 20 | 31 |
-| `78602790` | 1 | 19 | 24 | 5 | 15 |
-| `78603878` | 4 | 8 | 42 | 5 | 15 |
-| `78604644` | 1 | 28 | 114 | 3 | 10 |
-| `78605418` | 3 | 8 | 105 | 5 | 13 |
-| `78605651` | 1 | 18 | None | 1 | 1 |
+| `roi_reserve_v2` | `53322680` | `438.3` then `411.9` for the later v2 notebook submission | 22 | 8 | 14 |
+| `roi_reserve_v3` | `53344107` | `509.9` | 33 | 13 | 20 |
+| `roi_reserve_v4` | `53349976` | `490.4` | 19 | 9 | 10 |
+| `roi_reserve_v5` | `53353907` | `600.0` starting rating | 0 | 0 | 0 |
 
-The reserve is too conservative for low-production homes and still not
-defensive enough later, because it does not react to **incoming fleets**.
+Important scoring note: the starting score is `600.0`, but public score behaves
+like an Elo-style rating. The meaningful signal is score movement after public
+games plus replay evidence.
 
-## 5. Targeting Weakness
+## 3. What Wins Look Like
 
-The policy often prefers cheap, far targets over nearby expensive targets. That
-is understandable from the current ROI formula, but in public matches it creates
-slow captures and gives opponents time to build production.
+Wins usually come from **early survival into a production lead**. The agent does
+not win through one precise attack; it wins when neutral capture is fast enough,
+the home planet keeps enough reserve to avoid immediate collapse, and
+**planet production** compounds until the opponent is eliminated.
 
-Loss action aggregate:
+Aggregate patterns:
 
-| Metric | Value |
-| --- | ---: |
-| Median target distance | `46.7` |
-| Far target share, distance > 30 | `70.5%` |
-| Orbiting target share | `61.4%` |
-| Enemy-owned target share | `44.5%` |
-| Median travel time | `31.3` turns |
-| Median ships sent | `8` |
+| Agent | Win replay count | Median first capture | Median final production gap | Median final ship gap |
+| --- | ---: | ---: | ---: | ---: |
+| `roi_reserve_v2` | 8 | `19` | `57.50x` | `3691.50x` |
+| `roi_reserve_v3` | 13 | `13` | `80.00x` | `3280.00x` |
+| `roi_reserve_v4` | 9 | `17` | `68.00x` | `3807.00x` |
 
-Example first moves:
+Representative wins:
 
-| Episode | First action | Chosen target | Target production | Distance | Travel turns | Nearby alternative |
+| Agent | Episode | Players | First capture | Final production gap | Final ship gap | Replay tags |
 | --- | ---: | ---: | ---: | ---: | ---: | --- |
-| `78602430` | 5 | neutral | 5 | 52.4 | 26.7 | nearest neutral at 10.8 distance |
-| `78603878` | 8 | neutral | 5 | 27.1 | 11.7 | nearest target at 12.8 distance |
-| `78605418` | 8 | neutral | 1 | 23.3 | 12.3 | nearest target at 11.7 distance |
-| `78605651` | 18 | enemy-owned | 1 | 53.8 | 30.8 | nearest neutral at 9.5 distance |
+| `roi_reserve_v3` | `78675610` | 2 | 8 | `92.00x` | `5079.00x` | `fast_opening`, `production_lead`, `ship_lead` |
+| `roi_reserve_v3` | `78669936` | 4 | 9 | `96.00x` | `10094.00x` | `fast_opening`, `production_lead`, `ship_lead` |
+| `roi_reserve_v4` | `78694666` | 2 | 11 | `92.00x` | `6087.00x` | `fast_opening`, `production_lead`, `ship_lead` |
 
-The policy needs a stronger **tempo model**: a target with high theoretical ROI
-is bad if it arrives after the opponent has already taken the nearby economy.
+## 4. What Losses Look Like
 
-## 6. Defense Weakness
+Losses are **strategy failures**, not packaging or runtime failures. Current
+v3/v4 losses mostly end in elimination. Before elimination, the replay curves
+show the same pattern: early capture may happen, but the agent fails to protect
+or compound that control into the midgame.
 
-v2 reserves a fixed number of ships but does not evaluate whether a planet is
-actually under threat. In replay losses we see two different failures:
+Aggregate loss patterns:
 
-- **Slow starts**: low-production homes wait too long before the first capture.
-- **Over-launching later**: high-action losses launch many ships while the
-  opponent ends with a massive score advantage.
+| Agent | Loss replay count | Median first capture | Median final production gap | Median final ship gap | Loss far-action share | Loss enemy-target share |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| `roi_reserve_v2` | 14 | `37` | `0.00x` | `0.00x` | `38.7%` | `40.5%` |
+| `roi_reserve_v3` | 20 | `17` | `0.00x` | `0.00x` | `40.7%` | `46.2%` |
+| `roi_reserve_v4` | 10 | `12` | `0.00x` | `0.00x` | `25.6%` | `19.1%` |
 
-The current agent also sends attacks toward enemy-owned planets without
-estimating **enemy reinforcement**, **enemy arrivals**, or whether the target
-will still be worth the travel time.
+The v4 losses are especially useful: even with lower far-action and enemy-target
+shares than v3, v4 still gets eliminated. That means the next fix should not be
+another small target-weight calibration. We need better **combat valuation** and
+**defense timing**.
 
-## 7. Strategy Decision
+Representative losses:
 
-The next candidate should be a real model change, not a calibration-only
-notebook. Build `roi_reserve_v3` around:
+| Agent | Episode | Players | First action | First capture | Peak planets | Final planets | Main tags |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| `roi_reserve_v3` | `78671881` | 4 | 2 | None | 1 | 0 | `far_opening_target`, `slow_or_no_first_capture`, `multiplayer_pressure` |
+| `roi_reserve_v3` | `78672450` | 2 | 4 | 17 | 14 | 0 | `lost_midgame_control`, `enemy_target_heavy` |
+| `roi_reserve_v3` | `78674966` | 4 | 3 | 11 | 16 | 0 | `lost_midgame_control`, `enemy_target_heavy`, `multiplayer_pressure` |
+| `roi_reserve_v4` | `78690953` | 2 | 8 | 10 | 16 | 0 | `lost_midgame_control` |
+| `roi_reserve_v4` | `78694282` | 2 | 7 | 12 | 14 | 0 | `lost_midgame_control` |
 
-1. **Opening tempo reserve**
-   Lower the early reserve when the home planet has low production or when a
-   nearby low-cost neutral can be captured quickly.
+## 5. Replay Diagnosis
 
-2. **Travel-time cap**
-   Penalize or skip targets whose capture travel time is too high, especially
-   before we own a stable production base.
+The main weakness has shifted over versions:
 
-3. **Local expansion first**
-   In the first phase, prefer nearby neutral captures that increase production
-   quickly, even if their raw production/ship ROI is lower.
+1. `roi_reserve_v2` had an **opening-tempo problem**. Fixed reserves delayed
+   first launch or first capture, especially from low-production homes.
+2. `roi_reserve_v3` improved opening tempo, but losses still show high
+   **far-action** and **enemy-target** shares. It often overreaches after a
+   small base is established.
+3. `roi_reserve_v4` reduced some target-selection symptoms, but did not solve
+   **midgame control collapse**. Several v4 losses capture early and reach 14 to
+   16 peak planets, then end at zero planets.
 
-4. **Incoming-threat defense**
-   Estimate which owned planets are threatened by enemy fleets and stop using
-   those planets as sources until the threat is covered.
+The current failure mode is not simply "expand faster." It is:
 
-5. **Contested target cost**
-   Increase required ships or skip targets when enemy fleets or enemy-owned
-   planets can contest the arrival window.
+- launch decisions do not estimate whether the source planet remains safe;
+- target decisions do not estimate enemy arrivals or target owner at impact;
+- reinforcement is too weak or too late for high-production owned planets;
+- four-player matches punish local ROI because third-party pressure changes the
+  value of exposed planets.
 
-6. **Reinforcement**
-   Send spare ships from safe low-value planets to high-production owned planets
-   that are likely to be attacked.
+## 6. Strategy Decision
 
-Do not create a new notebook for more replay calibration. A v3 notebook is
-justified only when the agent behavior changes around these mechanics.
+Keep `roi_reserve_v3` as the active baseline. Its current public score is higher
+than v4, and v4's replay evidence does not justify promotion.
+
+The `roi_reserve_v5` challenger now tests this direction with a real model
+change around **combat survival**:
+
+1. Add source safety checks before launch. A source should not spend ships if
+   incoming enemy fleets or nearby enemy production can flip it.
+2. Estimate target state at arrival. Increase capture cost for enemy-owned or
+   contested planets based on expected production and visible fleet arrivals.
+3. Add midgame defense mode. Reinforce high-production owned planets under
+   threat and stop spending from threatened sources.
+4. Prefer defensible clusters in four-player games. A lower-ROI nearby planet is
+   better than a far or exposed planet if it keeps the production base compact.
+5. Keep opening improvements from v3, but do not create another notebook only
+   for calibration. Future notebooks are justified only when agent behavior
+   changes around combat valuation, defense, or replay parsing.
+
+Judge v5 by public score and new replays, not by the 30/30 random smoke result
+alone.

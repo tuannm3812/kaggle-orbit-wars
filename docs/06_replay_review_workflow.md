@@ -53,9 +53,10 @@ this environment also exposes submissions but not episode/replay helpers. A
 local package-source scan also found no references to `episodes`, `replay`,
 `logs`, or `pages`.
 
-Practical rule: download episode replay JSON from the Kaggle web UI, or use an
-environment where the official replay commands are available. Store raw files
-under ignored paths:
+Practical rule: download episode replay JSON from the Kaggle web UI, use an
+environment where the official replay commands are available, or call Kaggle's
+authenticated episode endpoints after discovering the submission id. Store raw
+files under ignored paths:
 
 ```text
 replays/roi_reserve_v2/
@@ -66,8 +67,8 @@ replays/roi_reserve_v4/
 logs/roi_reserve_v4/
 ```
 
-Current local status: public replay JSON for `roi_reserve_v2` submission
-`53322680` has been downloaded under ignored path `replays/roi_reserve_v2/`.
+Current local status: public replay JSON for `roi_reserve_v2`, `roi_reserve_v3`,
+and `roi_reserve_v4` has been downloaded under ignored paths in `replays/`.
 Replay-derived findings are curated in `docs/07_public_replay_findings.md`.
 Keep raw replay files and generated diagnostics out of git.
 
@@ -79,6 +80,12 @@ Run replay summaries with:
 python3 scripts/replay_diagnostics.py replays/roi_reserve_v2/*.json --player 0 --out-dir outputs/replay_diagnostics/roi_reserve_v2
 ```
 
+Run current multi-submission outcome analysis with:
+
+```bash
+python3 scripts/replay_outcome_analysis.py
+```
+
 Generated outputs:
 
 | Output | Use |
@@ -86,6 +93,8 @@ Generated outputs:
 | `replay_summary.csv` | One row per replay with winner, final control, and weakness flags. |
 | `player_summary.csv` | Per-player final production, score proxy, action count, and launched ships. |
 | `replay_findings.md` | Short Markdown handoff for strategy review. |
+| `outputs/replay_outcome_analysis/replay_outcomes.csv` | Multi-submission opening, final-control, and diagnosis table. |
+| `outputs/replay_outcome_analysis/replay_outcome_analysis.md` | Generated current replay analysis used to curate docs. |
 
 ## 5. Review Questions
 

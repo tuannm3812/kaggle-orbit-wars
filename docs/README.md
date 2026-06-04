@@ -9,7 +9,7 @@
 | `04_agent_version_log.md` | Agent version history, submission state, score notes, and keep/revise decisions. |
 | `05_next_steps.md` | Current near-term action plan and evaluation checklist. |
 | `06_replay_review_workflow.md` | Script-first replay review process and notebook hygiene rule. |
-| `07_public_replay_findings.md` | Public replay evidence for `roi_reserve_v2` losses and v3 strategy direction. |
+| `07_public_replay_findings.md` | Current public replay evidence across submitted agents and strategy direction. |
 
 ## Reading Order
 
@@ -18,4 +18,4 @@
 3. Use `05_next_steps.md` to choose the next **work item**.
 4. Record every meaningful **agent** in `04_agent_version_log.md`.
 5. Use `06_replay_review_workflow.md` before creating replay notebooks.
-6. Read `07_public_replay_findings.md` before implementing v3.
+6. Read `07_public_replay_findings.md` before changing the active agent.
