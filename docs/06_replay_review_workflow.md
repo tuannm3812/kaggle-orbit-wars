@@ -12,7 +12,8 @@ Current reviewed submissions:
 | Version | Public score | Smoke losses |
 | --- | ---: | --- |
 | `roi_reserve_v2` | `438.3` | Best smoke: seed `27` |
-| `roi_reserve_v3` | `547.5` after early games | Seeds `0`, `19` |
+| `roi_reserve_v3` | `505.8` after early games | Seeds `0`, `19` |
+| `roi_reserve_v4` | `529.3` after early games | Seed `0` |
 
 ## 2. Official Replay Commands
 
@@ -61,6 +62,8 @@ replays/roi_reserve_v2/
 logs/roi_reserve_v2/
 replays/roi_reserve_v3/
 logs/roi_reserve_v3/
+replays/roi_reserve_v4/
+logs/roi_reserve_v4/
 ```
 
 Current local status: public replay JSON for `roi_reserve_v2` submission
@@ -134,10 +137,12 @@ Key observed patterns:
   behavior.
 
 v3 added **defense-aware launch gating**, **incoming-threat estimation**,
-**opening tempo reserve**, and **local-neutral opening preference**. Its first
-public score movement was down from the `600.0` starting score to `547.5`, so
-the next replay review should focus on whether those changes fixed the v2
-opening failures or simply introduced new losses.
+**opening tempo reserve**, and **local-neutral opening preference**. Its public
+score moved down from the `600.0` starting score to `505.8`, so v4 added a
+narrower OW-Proto-inspired slice: **timed reinforcement** and
+**enemy-production capture cost**. The next replay review should focus on
+whether v4's reinforcement arrives in time, whether it over-defends, and whether
+enemy-owned captures still arrive underfunded.
 
 ## 8. Notebook Rule
 

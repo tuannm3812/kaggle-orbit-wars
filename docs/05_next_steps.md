@@ -2,14 +2,13 @@
 
 ## 1. Immediate Goal
 
-Review `roi_reserve_v3` score movement and public replays before changing the
-model again. The latest submitted challenger started at public score `600.0`,
-then moved down to `547.5` after early public games. That confirms the starting
-score is not proof of improvement. v3 adds
+Review `roi_reserve_v4` score movement and public replays before changing the
+model again. The latest submitted challenger moved from the `600.0` starting
+score to `529.3`, currently above v3's `505.8` but still not a confirmed
+strategic win without replay review. v4 adds
+**timed reinforcement** and **enemy-production capture cost** on top of v3's
 **opening tempo reserve**, **local-neutral opening preference**, **travel-time
-filtering**, and **incoming-threat launch holds** on top of v2's **target ROI**,
-**source reserves**, **sun path rejection**, **orbit-aware aiming**, and
-**target reservation**.
+filtering**, and **incoming-threat launch holds**.
 
 ## 2. Current Evidence
 
@@ -57,10 +56,21 @@ planets.
 
 Remaining v3 smoke losses are seeds `0` and `19`.
 
+`roi_reserve_v4` Kaggle smoke benchmark:
+
+| Metric | Value |
+| --- | ---: |
+| Wins | `29` |
+| Losses | `1` |
+| Win rate | `96.7%` |
+| Run errors | `0` |
+
+Remaining v4 smoke loss is seed `0`.
+
 Scoring caution: a fresh Orbit Wars submission can show `600.0` before it has
-played enough public matches. Treat that as a starting rating. v3's first score
-movement was downward to `547.5`, so promotion requires replay evidence that the
-drop is recoverable or narrower than v2's failure modes.
+played enough public matches. Treat that as a starting rating. v4 has moved
+down to `529.3`, so promotion requires replay evidence that its losses are
+narrower or more fixable than v3's.
 
 Public replay review is now available in `docs/07_public_replay_findings.md`.
 Reviewed public losses show the same broad weakness as the smoke losses, but
@@ -94,16 +104,31 @@ failure:
 4. **Defense and incoming fleets**
    v3 holds launches from owned planets with clear incoming enemy fleet threats.
 
-## 4. Next Work Items
+## 4. Completed v4 Work Items
 
-1. **Replay review for v3**
-   Compare public wins and losses against the v2 replay failure modes: opening
-   timing, long-travel targets, defense holds, and elimination pattern.
+1. **Timed reinforcement**
+   v4 uses visible incoming enemy fleet ETA to send reinforcements before an
+   owned planet is forecast to fall.
 
-2. **Score movement check**
-   Continue checking the submission table after public games. v3 has already
-   dropped from `600.0` to `547.5`; inspect losses before making another model
-   change.
+2. **Enemy-production capture cost**
+   v4 increases required ships for enemy-owned targets based on expected
+   production before our fleet arrives.
+
+3. **OW-Proto lesson**
+   The `djenkivanov/orbit-wars-agent-ow-proto-passed-1-000` notebook validates
+   that reinforcement timing and production-aware attack cost are high-value
+   mechanics. v4 ports those ideas narrowly without copying the full public
+   agent.
+
+## 5. Next Work Items
+
+1. **Score movement check for v4**
+   Continue checking the submission table after public games. v4 currently sits
+   at `529.3` after dropping from `600.0`.
+
+2. **Replay review for v4**
+   Compare public wins and losses against v3 and v2 failure modes: opening
+   timing, reinforcement success, over-defense, and enemy-production attacks.
 
 3. **Contested target cost**
    Estimate whether enemy ships can arrive before or near our capture time, then
@@ -122,7 +147,7 @@ failure:
    for v4 heuristics, not as a reason to add training code before replay evidence
    supports it.
 
-## 5. Evaluation Checklist
+## 6. Evaluation Checklist
 
 Before submitting the next candidate:
 
@@ -135,7 +160,7 @@ Before submitting the next candidate:
 - version log is updated;
 - known loss seeds are inspected.
 
-## 6. Submission Rule
+## 7. Submission Rule
 
 Submit through the **notebook output** path, not a local `main.py` upload:
 
