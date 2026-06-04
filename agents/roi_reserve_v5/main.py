@@ -512,6 +512,7 @@ def build_regroup_moves(
             mutable_ships[target_id] += transfer
             needed -= transfer
             used_source_ids.add(donor_id)
+            used_source_ids.add(target_id)
 
     return moves
 

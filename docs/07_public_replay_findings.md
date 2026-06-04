@@ -30,7 +30,7 @@ GET /api/v1/competitions/episodes/<EPISODE_ID>/replay
 | `roi_reserve_v2` | `53322680` | `438.3` then `411.9` for the later v2 notebook submission | 22 | 8 | 14 |
 | `roi_reserve_v3` | `53344107` | `509.9` | 33 | 13 | 20 |
 | `roi_reserve_v4` | `53349976` | `471.9` | 19 | 9 | 10 |
-| `roi_reserve_v5` | `53353907` | `453.4` | 15 | 4 | 11 |
+| `roi_reserve_v5` | `53353907` | `415.4` | 38 | 11 | 27 |
 
 Important scoring note: the starting score is `600.0`, but public score behaves
 like an Elo-style rating. The meaningful signal is score movement after public
@@ -117,8 +117,7 @@ than v4, and v4's replay evidence does not justify promotion.
 
 The `roi_reserve_v5` challenger now tests this direction with a real model
 change around **combat survival**, but current public evidence does not support
-promotion: score moved down to `453.4`, with four downloaded wins and eleven
-downloaded losses.
+promotion: score moved down to `415.4`, with eleven downloaded wins and twenty-seven downloaded losses.
 
 1. Add source safety checks before launch. A source should not spend ships if
    incoming enemy fleets or nearby enemy production can flip it.
