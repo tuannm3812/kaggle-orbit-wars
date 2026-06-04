@@ -29,7 +29,7 @@ GET /api/v1/competitions/episodes/<EPISODE_ID>/replay
 | `roi_reserve_v2` | `53322680` | `438.3` then `411.9` for the later v2 notebook submission | 22 | 8 | 14 |
 | `roi_reserve_v3` | `53344107` | `509.9` | 33 | 13 | 20 |
 | `roi_reserve_v4` | `53349976` | `471.9` | 19 | 9 | 10 |
-| `roi_reserve_v5` | `53353907` | `451.2` | 3 | 1 | 2 |
+| `roi_reserve_v5` | `53353907` | `518.4` | 3 | 1 | 2 |
 
 Important scoring note: the starting score is `600.0`, but public score behaves
 like an Elo-style rating. The meaningful signal is score movement after public
@@ -115,8 +115,8 @@ Keep `roi_reserve_v3` as the active baseline. Its current public score is higher
 than v4, and v4's replay evidence does not justify promotion.
 
 The `roi_reserve_v5` challenger now tests this direction with a real model
-change around **combat survival**, but early public evidence does not support
-promotion: score moved down to `451.2`, with one downloaded win and two
+change around **combat survival**, but early public evidence is still too thin
+for promotion: score is volatile at `518.4`, with one downloaded win and two
 downloaded elimination losses.
 
 1. Add source safety checks before launch. A source should not spend ships if
