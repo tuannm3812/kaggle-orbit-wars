@@ -29,7 +29,7 @@ GET /api/v1/competitions/episodes/<EPISODE_ID>/replay
 | `roi_reserve_v2` | `53322680` | `438.3` then `411.9` for the later v2 notebook submission | 22 | 8 | 14 |
 | `roi_reserve_v3` | `53344107` | `509.9` | 33 | 13 | 20 |
 | `roi_reserve_v4` | `53349976` | `471.9` | 19 | 9 | 10 |
-| `roi_reserve_v5` | `53353907` | `600.0` starting rating | 0 | 0 | 0 |
+| `roi_reserve_v5` | `53353907` | `562.3` | 2 | 1 | 1 |
 
 Important scoring note: the starting score is `600.0`, but public score behaves
 like an Elo-style rating. The meaningful signal is score movement after public
@@ -115,7 +115,9 @@ Keep `roi_reserve_v3` as the active baseline. Its current public score is higher
 than v4, and v4's replay evidence does not justify promotion.
 
 The `roi_reserve_v5` challenger now tests this direction with a real model
-change around **combat survival**:
+change around **combat survival**. Early v5 evidence is promising but not
+settled: public score moved to `562.3`, with one downloaded win and one
+downloaded four-player elimination loss.
 
 1. Add source safety checks before launch. A source should not spend ships if
    incoming enemy fleets or nearby enemy production can flip it.
@@ -130,4 +132,6 @@ change around **combat survival**:
    changes around combat valuation, defense, or replay parsing.
 
 Judge v5 by public score and new replays, not by the 30/30 random smoke result
-alone.
+alone. The first v5 loss still shows a **multiplayer production gap** after
+peaking at only two planets, so four-player survival remains the next replay
+focus.

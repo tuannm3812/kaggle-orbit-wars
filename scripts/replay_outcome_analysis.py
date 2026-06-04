@@ -15,6 +15,7 @@ SUBMISSIONS = {
     "roi_reserve_v2": 53322680,
     "roi_reserve_v3": 53344107,
     "roi_reserve_v4": 53349976,
+    "roi_reserve_v5": 53353907,
 }
 
 
@@ -491,7 +492,12 @@ def write_markdown(path: Path, outcomes: list[Outcome]) -> None:
         "| Agent | Public score | Reviewed replays | Wins | Losses |",
         "| --- | ---: | ---: | ---: | ---: |",
     ]
-    scores = {"roi_reserve_v2": "438.3/411.9", "roi_reserve_v3": "509.9", "roi_reserve_v4": "490.4"}
+    scores = {
+        "roi_reserve_v2": "438.3/411.9",
+        "roi_reserve_v3": "509.9",
+        "roi_reserve_v4": "471.9",
+        "roi_reserve_v5": "562.3",
+    }
     for label in sorted({outcome.label for outcome in outcomes}):
         subset = [outcome for outcome in outcomes if outcome.label == label]
         wins = sum(outcome.result == "win" for outcome in subset)
