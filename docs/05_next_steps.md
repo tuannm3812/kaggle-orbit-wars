@@ -3,8 +3,9 @@
 ## 1. Immediate Goal
 
 Review `roi_reserve_v5` losses before changing the model again. v5 is submitted
-on account `tuannm3812` and has dropped to `415.4` after more public games,
-while `roi_reserve_v3` remains the best mature baseline on `tuannm3823`.
+on account `tuannm3812` and now has two public submissions: the earlier
+combat-survival variant at `443.5` and the regroup-pass variant at `461.2`.
+`roi_reserve_v3` remains the best mature baseline on `tuannm3823`.
 
 ## 2. Current Evidence
 
@@ -75,9 +76,9 @@ Remaining v4 smoke loss is seed `0`.
 Scoring caution: a fresh Orbit Wars submission can show `600.0` before it has
 played enough public matches. Treat that as a starting rating. v4 moved down to
 `471.9`, so its reinforcement/production-cost changes should be treated as a
-failed challenger until replays explain the failure. v5 has also underperformed
-v3 after moving down to `415.4`; its 30/30 random smoke result did not translate
-to public strength.
+failed challenger until replays explain the failure. v5 recovered from `443.5`
+to `461.2` after the regroup pass, but it still trails v4 and v3; the 30/30
+random smoke result did not translate to public strength.
 
 Public replay review is now available in `docs/07_public_replay_findings.md`.
 Reviewed public losses show the same broad weakness as the smoke losses, but
@@ -207,8 +208,8 @@ Keep the agent ladder small:
    when it was pushed too far.
 
 3. **Next candidate**
-   Build `roi_reserve_v6` from the v3 opening shape, then add only one new
-   improvement at a time:
+   `roi_reserve_v6` now exists at `agents/roi_reserve_v6/main.py`. It keeps the
+   v3 opening shape and adds only one new improvement at a time:
    - bounded regroup for surplus ships in pressure hotspots;
    - a milder source-safety gate than v5;
    - no extra notebook unless the model shape changes materially.
