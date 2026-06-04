@@ -2,10 +2,9 @@
 
 ## 1. Immediate Goal
 
-Collect more `roi_reserve_v5` replay evidence before changing the model again.
-v5 is submitted on account `tuannm3812` and has moved to `562.3` after early
-public games, while `roi_reserve_v3` remains the best mature baseline on
-`tuannm3823`.
+Review `roi_reserve_v5` losses before changing the model again. v5 is submitted
+on account `tuannm3812` and has dropped to `451.2` after early public games,
+while `roi_reserve_v3` remains the best mature baseline on `tuannm3823`.
 
 ## 2. Current Evidence
 
@@ -76,9 +75,9 @@ Remaining v4 smoke loss is seed `0`.
 Scoring caution: a fresh Orbit Wars submission can show `600.0` before it has
 played enough public matches. Treat that as a starting rating. v4 moved down to
 `471.9`, so its reinforcement/production-cost changes should be treated as a
-failed challenger until replays explain the failure. v5 is promising after
-moving to `562.3`, but it must still be judged by additional public replays, not
-by the 30/30 random smoke result alone.
+failed challenger until replays explain the failure. v5 also underperformed v3
+after moving down to `451.2`; its 30/30 random smoke result did not translate to
+public strength.
 
 Public replay review is now available in `docs/07_public_replay_findings.md`.
 Reviewed public losses show the same broad weakness as the smoke losses, but
@@ -146,15 +145,15 @@ failure:
 ## 6. Next Work Items
 
 1. **Replay expansion for v5**
-   v5 currently has two downloaded public replays: one win and one four-player
-   elimination loss. Keep collecting until we have enough evidence to separate
-   real improvement from early matchmaking variance.
+   v5 currently has three downloaded public replays: one win and two
+   elimination losses. Keep v3 as the baseline while collecting any additional
+   v5 episodes.
 
 2. **Replay review for v5**
    Compare new wins and losses against v3/v4 failure modes: midgame control
-   collapse, over-defense, source safety, and contested enemy attacks. The first
-   v5 loss still shows a four-player **production gap** and elimination after
-   peaking at only two planets.
+   collapse, over-defense, source safety, and contested enemy attacks. Current
+   v5 losses show **production gaps** and elimination after peaking at only two
+   planets in one four-player loss and five planets in one two-player loss.
 
 3. **Comet policy**
    Ignore or capture comets based on remaining lifetime and travel cost.

@@ -496,7 +496,7 @@ def write_markdown(path: Path, outcomes: list[Outcome]) -> None:
         "roi_reserve_v2": "438.3/411.9",
         "roi_reserve_v3": "509.9",
         "roi_reserve_v4": "471.9",
-        "roi_reserve_v5": "562.3",
+        "roi_reserve_v5": "451.2",
     }
     for label in sorted({outcome.label for outcome in outcomes}):
         subset = [outcome for outcome in outcomes if outcome.label == label]
