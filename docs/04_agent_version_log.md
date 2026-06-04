@@ -12,7 +12,7 @@ Latest submissions:
 
 | File | Kaggle timestamp | Description | Status | Public score |
 | --- | --- | --- | --- | --- |
-| `submission.tar.gz` | `2026-06-04 05:09:23` | `roi_reserve_v4: timed reinforcement and production-aware capture cost` | `SubmissionStatus.COMPLETE` | `529.3` |
+| `submission.tar.gz` | `2026-06-04 05:09:23` | `roi_reserve_v4: timed reinforcement and production-aware capture cost` | `SubmissionStatus.COMPLETE` | `442.1` |
 | `submission.tar.gz` | `2026-06-04 00:22:31.283000` | `roi_reserve_v3: tempo reserve, local expansion, incoming-threat hold` | `SubmissionStatus.COMPLETE` | `505.8` |
 | `submission.tar.gz` | `2026-06-03 22:25:31` | `roi_reserve_v2: consolidated submission notebook, 29/30 smoke` | `SubmissionStatus.COMPLETE` | `411.9` |
 | `submission.tar.gz` | `2026-06-03 09:41:07.643000` | `roi_reserve_v2: orbit-aware aiming, target reservation, stronger reserves` | `SubmissionStatus.COMPLETE` | `438.3` |
@@ -35,7 +35,7 @@ new episodes are played.
 | `roi_reserve_v1` | `kaggle/archive/roi_reserve_v1/02_roi_reserve_agent.ipynb` / `agents/roi_reserve_v1/main.py` | Yes | `382.5` | Production-aware ROI target scoring, source reserve, and sun-path rejection. Kaggle smoke benchmark: 25 wins, 5 losses, 0 errors over 30 seeds vs `random`. | Superseded by v2 smoke benchmark; keep for leaderboard comparison. |
 | `roi_reserve_v2` | `notebooks/02_agent_submission.ipynb` / `kaggle/submission/02_agent_submission.ipynb` / `agents/roi_reserve_v2/main.py` | Yes | `438.3` | Adds orbit-aware aiming, per-turn target reservation, and stronger early reserve. Best Kaggle smoke benchmark: 29 wins, 1 loss, 0 errors over 30 seeds vs `random`. | Superseded by v3 public score; keep as rollback because smoke performance was slightly stronger against `random`. |
 | `roi_reserve_v3` | `notebooks/02_agent_submission.ipynb` / `kaggle/submission/02_agent_submission.ipynb` / `agents/roi_reserve_v3/main.py` | Yes | `505.8` | Adds replay-driven opening tempo reserve, early local-neutral preference, travel-time filtering, and incoming-threat launch holds. Kaggle smoke benchmark: 28 wins, 2 losses, 0 errors over 30 seeds vs `random`. | Submitted challenger. It dropped from the `600.0` starting score after early public games, so replay review is required before promoting or extending it. |
-| `roi_reserve_v4` | `notebooks/02_agent_submission.ipynb` / `kaggle/submission/02_agent_submission.ipynb` / `agents/roi_reserve_v4/main.py` | Yes | `529.3` | Adds Proto-inspired timed reinforcement and enemy-production capture cost. Kaggle smoke benchmark: 29 wins, 1 loss, 0 errors over 30 seeds vs `random`. | Current leading challenger by observed public score, but it still dropped from the `600.0` starting score. Review replays before adding more complexity. |
+| `roi_reserve_v4` | `agents/roi_reserve_v4/main.py` | Yes | `442.1` | Adds Proto-inspired timed reinforcement and enemy-production capture cost. Kaggle smoke benchmark: 29 wins, 1 loss, 0 errors over 30 seeds vs `random`. | Underperformed v3 after public games. Do not promote; active submission notebook is rolled back to v3 while v4 losses are reviewed. |
 
 Important scoring note: Orbit Wars public scores behave like an Elo-style
 rating. A fresh submission can appear at `600.0` before enough games are played.

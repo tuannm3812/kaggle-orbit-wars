@@ -1,4 +1,4 @@
-"""Tempo-aware, reinforcement-capable, orbit-aware, and sun-safe Orbit Wars agent v4."""
+"""Tempo-aware, defensive, orbit-aware, and sun-safe Orbit Wars agent v3."""
 
 import math
 from collections import namedtuple
@@ -18,9 +18,6 @@ MAX_FLEET_SPEED = 6.0
 EARLY_OWNED_COUNT = 3
 THREAT_HORIZON_TURNS = 30
 PLANET_THREAT_MARGIN = 0.75
-REINFORCE_LOOKAHEAD_TURNS = 35
-REINFORCE_SAFETY_MARGIN = 2
-ENEMY_PRODUCTION_MARGIN = 2
 
 
 def get_obs_value(obs: Any, name: str, default: Any) -> Any:
@@ -167,69 +164,6 @@ def fleet_intersects_planet(fleet: Any, planet: Any, horizon_turns: int = THREAT
     return clearance <= float(planet.radius) + PLANET_THREAT_MARGIN
 
 
-def fleet_eta_to_planet(fleet: Any, planet: Any, horizon_turns: int = REINFORCE_LOOKAHEAD_TURNS) -> Optional[int]:
-    """Estimate when a fleet trajectory first reaches a planet.
-
-    Args:
-        fleet: Fleet-like record with position, angle, and ship count.
-        planet: Planet-like collision target.
-        horizon_turns: Maximum ETA to consider.
-
-    Returns:
-        ETA in turns, or `None` if the fleet does not hit within the horizon.
-    """
-    speed = fleet_speed(int(fleet.ships))
-    dir_x = math.cos(float(fleet.angle))
-    dir_y = math.sin(float(fleet.angle))
-    dx = float(planet.x) - float(fleet.x)
-    dy = float(planet.y) - float(fleet.y)
-    projection = dx * dir_x + dy * dir_y
-    if projection < 0:
-        return None
-    perpendicular_sq = dx * dx + dy * dy - projection * projection
-    radius = float(planet.radius) + PLANET_THREAT_MARGIN
-    if perpendicular_sq > radius * radius:
-        return None
-    hit_distance = max(0.0, projection - math.sqrt(max(0.0, radius * radius - perpendicular_sq)))
-    eta = int(math.ceil(hit_distance / speed))
-    if eta < 1 or eta > horizon_turns:
-        return None
-    return eta
-
-
-def incoming_reinforcement_needs(player: int, planets: list, fleets: list) -> dict:
-    """Compute owned planets that need timed reinforcement to survive visible fleets."""
-    needs = {}
-    owned_planets = [planet for planet in planets if int(planet.owner) == player]
-    for planet in owned_planets:
-        enemy_arrivals = []
-        for fleet in fleets:
-            if int(fleet.owner) == player:
-                continue
-            eta = fleet_eta_to_planet(fleet, planet)
-            if eta is None:
-                continue
-            enemy_arrivals.append((eta, int(fleet.ships)))
-        if not enemy_arrivals:
-            continue
-
-        enemy_arrivals.sort()
-        garrison = float(planet.ships)
-        previous_turn = 0
-        for eta, ships in enemy_arrivals:
-            garrison += max(0, eta - previous_turn) * float(planet.production)
-            garrison -= ships
-            previous_turn = eta
-            if garrison < 0:
-                needs[int(planet.id)] = {
-                    "planet": planet,
-                    "ships_needed": int(math.ceil(-garrison)) + REINFORCE_SAFETY_MARGIN,
-                    "needed_by_turn": eta,
-                }
-                break
-    return needs
-
-
 def threatened_planet_ids(player: int, planets: list, fleets: list) -> set:
     """Identify owned planets whose launch budget should be frozen for defense."""
     owned_planets = [planet for planet in planets if int(planet.owner) == player]
@@ -300,22 +234,6 @@ def predicted_target(source: Any, target: Any, ships: int, angular_velocity: flo
     )
 
 
-def capture_ships_needed(source: Any, target: Any, seed_ships: int) -> int:
-    """Estimate capture cost at fleet arrival time."""
-    needed = int(target.ships) + 1
-    if int(target.owner) < 0:
-        return needed
-
-    ships = max(needed, int(seed_ships))
-    for _ in range(3):
-        travel_turns = distance(source, target) / fleet_speed(ships)
-        next_needed = int(math.ceil(int(target.ships) + travel_turns * float(target.production))) + ENEMY_PRODUCTION_MARGIN
-        if next_needed == ships:
-            break
-        ships = max(needed, next_needed)
-    return int(ships)
-
-
 def ships_to_send(source: Any, target: Any, owned_count: int = 1) -> Optional[int]:
     """Calculate a conservative capture fleet while preserving reserve.
 
@@ -326,55 +244,11 @@ def ships_to_send(source: Any, target: Any, owned_count: int = 1) -> Optional[in
     Returns:
         Ship count to send, or `None` if the source cannot afford the move.
     """
-    needed = capture_ships_needed(source, target, int(target.ships) + 1)
+    needed = int(target.ships) + 1
     available = int(source.ships) - source_reserve(source, owned_count)
     if available < needed:
         return None
     return int(needed)
-
-
-def build_reinforcement_moves(
-    player: int,
-    my_planets: list,
-    planets: list,
-    fleets: list,
-    angular_velocity: float,
-) -> tuple[list, set]:
-    """Create high-priority reinforcement moves for planets forecast to fall."""
-    needs = incoming_reinforcement_needs(player, planets, fleets)
-    if not needs:
-        return [], set()
-
-    moves = []
-    used_sources = set()
-    ordered_needs = sorted(needs.values(), key=lambda item: (item["needed_by_turn"], -int(item["planet"].production)))
-    for need in ordered_needs:
-        target = need["planet"]
-        due_turn = int(need["needed_by_turn"])
-        ships_needed = max(1, int(need["ships_needed"]))
-        best = None
-        for source in my_planets:
-            if int(source.id) == int(target.id) or int(source.id) in used_sources:
-                continue
-            available = int(source.ships) - source_reserve(source, len(my_planets))
-            if available < ships_needed:
-                continue
-            send = min(available, ships_needed)
-            aim_target = predicted_target(source, target, send, angular_velocity)
-            if crosses_sun(source, aim_target):
-                continue
-            travel_turns = distance(source, aim_target) / fleet_speed(send)
-            if travel_turns > due_turn:
-                continue
-            candidate = (travel_turns, -int(source.production), source, aim_target, send)
-            if best is None or candidate < best:
-                best = candidate
-        if best is None:
-            continue
-        _, _, source, aim_target, send = best
-        used_sources.add(int(source.id))
-        moves.append([int(source.id), launch_angle(source, aim_target), int(send)])
-    return moves, used_sources
 
 
 def target_score(source: Any, target: Any, ships: int) -> float:
@@ -441,7 +315,7 @@ def best_target(
 
 
 def agent(obs: Any) -> list:
-    """Return reinforcement-first, ROI-ranked, reserve-safe Orbit Wars launch actions."""
+    """Return ROI-ranked, reserve-safe, sun-safe Orbit Wars launch actions."""
     try:
         player = int(get_obs_value(obs, "player", 0))
         raw_planets = get_obs_value(obs, "planets", [])
@@ -459,18 +333,8 @@ def agent(obs: Any) -> list:
         reserved_target_ids = set()
         threatened_ids = threatened_planet_ids(player, planets, fleets)
         production_owned = total_production(my_planets)
-        reinforcement_moves, reinforcement_sources = build_reinforcement_moves(
-            player,
-            my_planets,
-            planets,
-            fleets,
-            angular_velocity,
-        )
-        moves.extend(reinforcement_moves)
         ordered_sources = sorted(my_planets, key=lambda p: (int(p.ships), int(p.production)), reverse=True)
         for source in ordered_sources:
-            if int(source.id) in reinforcement_sources:
-                continue
             if int(source.id) in threatened_ids:
                 continue
             chosen = best_target(

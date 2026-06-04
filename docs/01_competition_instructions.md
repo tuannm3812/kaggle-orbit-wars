@@ -47,7 +47,7 @@ Latest Kaggle CLI check on 2026-06-04:
 | Reward | `50,000 Usd` |
 | Team count | `3695` |
 | User entered | `True` |
-| Latest user submission score | `529.3` |
+| Latest user submission score | `442.1` |
 | Public leaderboard top score | `1785.9` |
 
 Important correction: a third-party mirror showed a later July deadline, but the

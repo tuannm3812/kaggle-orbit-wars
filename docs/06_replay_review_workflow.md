@@ -13,7 +13,7 @@ Current reviewed submissions:
 | --- | ---: | --- |
 | `roi_reserve_v2` | `438.3` | Best smoke: seed `27` |
 | `roi_reserve_v3` | `505.8` after early games | Seeds `0`, `19` |
-| `roi_reserve_v4` | `529.3` after early games | Seed `0` |
+| `roi_reserve_v4` | `442.1` after early games | Seed `0` |
 
 ## 2. Official Replay Commands
 

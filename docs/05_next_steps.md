@@ -2,13 +2,12 @@
 
 ## 1. Immediate Goal
 
-Review `roi_reserve_v4` score movement and public replays before changing the
-model again. The latest submitted challenger moved from the `600.0` starting
-score to `529.3`, currently above v3's `505.8` but still not a confirmed
-strategic win without replay review. v4 adds
-**timed reinforcement** and **enemy-production capture cost** on top of v3's
-**opening tempo reserve**, **local-neutral opening preference**, **travel-time
-filtering**, and **incoming-threat launch holds**.
+Review `roi_reserve_v4` public losses before changing the model again. v4 moved
+from the `600.0` starting score down to `442.1`, below v3's `505.8`, so the
+active submission notebook is rolled back to v3. v4 added **timed
+reinforcement** and **enemy-production capture cost** on top of v3's **opening
+tempo reserve**, **local-neutral opening preference**, **travel-time filtering**,
+and **incoming-threat launch holds**.
 
 ## 2. Current Evidence
 
@@ -68,9 +67,9 @@ Remaining v3 smoke losses are seeds `0` and `19`.
 Remaining v4 smoke loss is seed `0`.
 
 Scoring caution: a fresh Orbit Wars submission can show `600.0` before it has
-played enough public matches. Treat that as a starting rating. v4 has moved
-down to `529.3`, so promotion requires replay evidence that its losses are
-narrower or more fixable than v3's.
+played enough public matches. Treat that as a starting rating. v4 moved down to
+`442.1`, so its reinforcement/production-cost changes should be treated as a
+failed challenger until replays explain the failure.
 
 Public replay review is now available in `docs/07_public_replay_findings.md`.
 Reviewed public losses show the same broad weakness as the smoke losses, but
@@ -123,8 +122,8 @@ failure:
 ## 5. Next Work Items
 
 1. **Score movement check for v4**
-   Continue checking the submission table after public games. v4 currently sits
-   at `529.3` after dropping from `600.0`.
+   v4 currently sits at `442.1` after dropping from `600.0`, below v3's
+   `505.8`. Keep v3 active until v4 losses are understood.
 
 2. **Replay review for v4**
    Compare public wins and losses against v3 and v2 failure modes: opening

@@ -7,12 +7,12 @@ Notebook-first workspace for [Kaggle Orbit Wars](https://www.kaggle.com/competit
 ## Current State
 
 - **Official starter files** downloaded with the Kaggle CLI.
-- Latest submitted challenger is **`roi_reserve_v4`**, submitted from notebook
-  output as `submission.tar.gz`.
+- Active submission notebook is rolled back to **`roi_reserve_v3`** after the
+  `roi_reserve_v4` challenger underperformed public games.
 - **Live Kaggle CLI metadata** on 2026-06-03 shows deadline `2026-06-23 23:59:00`, reward `50,000 Usd`, and user entry status `True`.
-- Latest observed public score for `roi_reserve_v4` is `529.3` after dropping
-  from the `600.0` starting score. Treat score movement and replays as the
-  signal, not the initial score.
+- Latest observed public scores: `roi_reserve_v3` is `505.8`; `roi_reserve_v4`
+  dropped from the `600.0` starting score to `442.1`. Treat score movement and
+  replays as the signal, not the initial score.
 - Public replay findings are documented in `docs/07_public_replay_findings.md`.
 - Local PyPI `kaggle-environments==1.18.0` does not include `orbit_wars`, so **simulation EDA** should run on Kaggle.
 
