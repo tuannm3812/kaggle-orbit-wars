@@ -2,12 +2,13 @@
 
 ## 1. Scope
 
-Reviewed downloaded public replay JSON for `tuannm3823` submissions on
+Reviewed downloaded public replay JSON for `tuannm3823` and `tuannm3812` submissions on
 2026-06-04. Raw replay files are stored under ignored local paths:
 
 - `replays/roi_reserve_v2/`
 - `replays/roi_reserve_v3/`
 - `replays/roi_reserve_v4/`
+- `replays/roi_reserve_v5/`
 
 Generated analysis tables are stored under ignored local path
 `outputs/replay_outcome_analysis/`. The reusable analyzer is tracked at
@@ -29,7 +30,7 @@ GET /api/v1/competitions/episodes/<EPISODE_ID>/replay
 | `roi_reserve_v2` | `53322680` | `438.3` then `411.9` for the later v2 notebook submission | 22 | 8 | 14 |
 | `roi_reserve_v3` | `53344107` | `509.9` | 33 | 13 | 20 |
 | `roi_reserve_v4` | `53349976` | `471.9` | 19 | 9 | 10 |
-| `roi_reserve_v5` | `53353907` | `518.4` | 3 | 1 | 2 |
+| `roi_reserve_v5` | `53353907` | `453.4` | 15 | 4 | 11 |
 
 Important scoring note: the starting score is `600.0`, but public score behaves
 like an Elo-style rating. The meaningful signal is score movement after public
@@ -115,9 +116,9 @@ Keep `roi_reserve_v3` as the active baseline. Its current public score is higher
 than v4, and v4's replay evidence does not justify promotion.
 
 The `roi_reserve_v5` challenger now tests this direction with a real model
-change around **combat survival**, but early public evidence is still too thin
-for promotion: score is volatile at `518.4`, with one downloaded win and two
-downloaded elimination losses.
+change around **combat survival**, but current public evidence does not support
+promotion: score moved down to `453.4`, with four downloaded wins and eleven
+downloaded losses.
 
 1. Add source safety checks before launch. A source should not spend ships if
    incoming enemy fleets or nearby enemy production can flip it.
@@ -133,5 +134,6 @@ downloaded elimination losses.
 
 Judge future variants by public score and new replays, not by the 30/30 random
 smoke result alone. v5 reduced some far/enemy targeting symptoms, but its losses
-still show **production gaps** and elimination, so the next fix needs to restore
-opening production growth while preserving source safety.
+still show **production gaps**, weak peak economy, and frequent elimination, so
+the next fix needs to restore opening production growth while preserving source
+safety.

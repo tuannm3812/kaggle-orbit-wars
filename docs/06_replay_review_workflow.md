@@ -65,10 +65,12 @@ replays/roi_reserve_v3/
 logs/roi_reserve_v3/
 replays/roi_reserve_v4/
 logs/roi_reserve_v4/
+replays/roi_reserve_v5/
+logs/roi_reserve_v5/
 ```
 
 Current local status: public replay JSON for `roi_reserve_v2`, `roi_reserve_v3`,
-and `roi_reserve_v4` has been downloaded under ignored paths in `replays/`.
+`roi_reserve_v4`, and `roi_reserve_v5` has been downloaded under ignored paths in `replays/`.
 Replay-derived findings are curated in `docs/07_public_replay_findings.md`.
 Keep raw replay files and generated diagnostics out of git.
 
