@@ -16,6 +16,7 @@ SUBMISSIONS = {
     "roi_reserve_v3": 53344107,
     "roi_reserve_v4": 53349976,
     "roi_reserve_v5": 53353907,
+    "roi_reserve_v6": 53374152,
 }
 
 

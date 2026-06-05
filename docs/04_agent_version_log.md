@@ -3,11 +3,8 @@
 ## 1. Submission State
 
 As of 2026-06-05, account `tuannm3823` has five Orbit Wars submissions and
-account `tuannm3812` has two `roi_reserve_v5` challenger submissions under
-public evaluation.
-
-A `roi_reserve_v6` bounded-regroup challenger (`53374152`) is now pending on
-`tuannm3812` and has no public score yet.
+account `tuannm3812` has `roi_reserve_v5` and `roi_reserve_v6` challenger
+submissions under public evaluation.
 
 ```bash
 /Users/tuanm.nguyen/Library/Python/3.9/bin/kaggle competitions submissions orbit-wars
@@ -17,7 +14,7 @@ Latest submissions:
 
 | File | Kaggle timestamp | Description | Status | Public score |
 | --- | --- | --- | --- | --- |
-| `submission.tar.gz` | `2026-06-04 21:39:17.503000` | `roi_reserve_v6 bounded regroup challenger` | `PENDING` | `N/A` |
+| `roi_reserve_v6_submission.tar.gz` | `2026-06-04 21:39:17.503000` | `roi_reserve_v6 bounded regroup challenger` | `SubmissionStatus.COMPLETE` | `498.9` |
 | `submission.tar.gz` | `2026-06-04 12:53:18.993000` | `roi_reserve_v5 regroup pass from producer-style pressure analysis` | `SubmissionStatus.COMPLETE` | `461.2` |
 | `submission.tar.gz` | `2026-06-04 07:29:16` | `roi_reserve_v5: combat-survival source safety and contested-target pressure` | `SubmissionStatus.COMPLETE` | `415.4` |
 | `submission.tar.gz` | `2026-06-04 05:09:23` | `roi_reserve_v4: timed reinforcement and production-aware capture cost` | `SubmissionStatus.COMPLETE` | `471.9` |
@@ -45,7 +42,7 @@ new episodes are played.
 | `roi_reserve_v3` | `notebooks/02_agent_submission.ipynb` / `kaggle/submission/02_agent_submission.ipynb` / `agents/roi_reserve_v3/main.py` | Yes | `509.9` | Adds replay-driven opening tempo reserve, early local-neutral preference, travel-time filtering, and incoming-threat launch holds. Kaggle smoke benchmark: 28 wins, 2 losses, 0 errors over 30 seeds vs `random`. | Keep as active baseline. Current public replays show losses from midgame control collapse, but v3 still scores above v4. |
 | `roi_reserve_v4` | `agents/roi_reserve_v4/main.py` | Yes | `471.9` | Adds Proto-inspired timed reinforcement and enemy-production capture cost. Kaggle smoke benchmark: 29 wins, 1 loss, 0 errors over 30 seeds vs `random`. | Underperformed v3 after public games. Do not promote; active submission notebook is rolled back to v3 while v4 losses inform combat-valuation work. |
 | `roi_reserve_v5` | `notebooks/02_agent_submission.ipynb` / `kaggle/submission/02_agent_submission.ipynb` / `agents/roi_reserve_v5/main.py` | Yes, on `tuannm3812`; submission ids `53353907` and `53363032` | `461.2` | Adds replay-driven combat survival: source garrison projection after launch, aggregate incoming-fleet safety, visible enemy support pressure, multiplayer enemy-target restraint, and then a bounded Producer-style regroup pass. Kaggle-hosted smoke benchmark: 30 wins, 0 losses, 0 errors over 30 seeds vs `random`. | Regroup pass recovered some score from `443.5` to `461.2`, but the family still sits below v4 and v3. Keep as archive and use the loss pattern to design v6. |
-| `roi_reserve_v6` | `notebooks/02_agent_submission.ipynb` / `kaggle/submission/02_agent_submission.ipynb` / `agents/roi_reserve_v6/main.py` | Yes, on `tuannm3812`; submission id `53374152` | `N/A` | Keeps the v3 opening shape and adds a bounded regroup pass for surplus ships in pressure hotspots, plus a milder source-safety gate than v5. | Under evaluation. Use replay evidence to decide whether bounded regroup helps without reintroducing over-defense. |
+| `roi_reserve_v6` | `notebooks/02_agent_submission.ipynb` / `kaggle/submission/02_agent_submission.ipynb` / `agents/roi_reserve_v6/main.py` | Yes, on `tuannm3812`; submission id `53374152` | `498.9` | Keeps the v3 opening shape and adds a bounded regroup pass for surplus ships in pressure hotspots, plus a milder source-safety gate than v5. | Better than v5 and close to v3, but still below the stable baseline. Keep as the active challenger while replay review decides whether regroup or source safety needs the next change. |
 
 Important scoring note: Orbit Wars public scores behave like an Elo-style
 rating. A fresh submission can appear at `600.0` before enough games are played.
