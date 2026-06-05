@@ -133,6 +133,8 @@ promotion: score moved down to `415.4`, with eleven downloaded wins and twenty-s
 6. Borrow the Producer-style regroup pattern, but keep it bounded: only move
    surplus ships, only into nearby pressure hotspots, and only after source
    safety has been checked.
+7. Treat the notebook review workflow as a checklist: opening shape, midgame
+   safety, pressure redistribution, and target valuation. Ignore the rest.
 
 Judge future variants by public score and new replays, not by the 30/30 random
 smoke result alone. v5 reduced some far/enemy targeting symptoms, but its losses

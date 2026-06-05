@@ -223,3 +223,27 @@ Keep the agent ladder small:
 This setup makes score movement easier to read: if a variant drops, the replay
 delta tells us whether the issue is over-defense, over-regrouping, or the
 opening itself.
+
+## 10. Notebook Learning Checklist
+
+When reviewing strong public notebooks, extract only one mechanic at a time:
+
+1. **Opening shape**
+   Look for reserve rules, first-capture timing, and travel caps. Map those ideas
+   to `v3` first, not to a brand-new agent line.
+
+2. **Midgame safety**
+   Look for when the notebook stops launching, reinforces, or protects high-
+   production planets. Use that as an audit for `v6_source_safety`.
+
+3. **Pressure redistribution**
+   Look for bounded regroup or pressure-based ship movement. Use that as an
+   audit for `v6_regroup`.
+
+4. **Target valuation**
+   Look for distance, production, and contest-cost scoring. Use that to tune the
+   existing target score instead of adding a separate notebook.
+
+5. **Ignore the rest**
+   Do not copy training code, wide feature dumps, or notebook-specific helper
+   plumbing unless it changes the agent shape materially.
