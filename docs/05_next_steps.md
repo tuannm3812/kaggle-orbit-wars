@@ -3,7 +3,7 @@
 ## 1. Immediate Goal
 
 Review `roi_reserve_v6` replays before changing the model again. v6 is
-submitted on account `tuannm3812` and now sits at `498.9` after 29 public
+submitted on account `tuannm3812` and now sits at `506.8` after 29 public
 replays: 13 wins and 16 losses.
 `roi_reserve_v3` remains the best mature baseline on `tuannm3823`.
 
@@ -77,9 +77,10 @@ Scoring caution: a fresh Orbit Wars submission can show `600.0` before it has
 played enough public matches. Treat that as a starting rating. v4 moved down to
 `471.9`, so its reinforcement/production-cost changes should be treated as a
 failed challenger until replays explain the failure. v5 recovered from `443.5`
-to `461.2` after the regroup pass, but it still trails v4 and v3. v6 is stronger
-at `498.9`, yet it still trails the baseline; the 30/30 random smoke result did
-not translate to public strength.
+to `467.6` after the regroup pass, but it still trails v4 and v3. v6 is stronger
+at `506.8`, and it is now close enough to the baseline that the next gain should
+come from one focused ablation, not a broad rewrite. The 30/30 random smoke
+result did not translate to public strength.
 
 Public replay review is now available in `docs/07_public_replay_findings.md`.
 Reviewed public losses show the same broad weakness as the smoke losses, but
@@ -203,9 +204,10 @@ Keep the agent ladder small:
    mature public score at `509.9`.
 
 2. **Archive**
-   `roi_reserve_v5` stays as the combat-survival archive. Its public score is
-   `415.4`, and the replay set shows that the extra safety logic was too costly
-   when it was pushed too far.
+   `roi_reserve_v5` stays as the combat-survival archive. Its public score
+   improved from `415.4` to `467.6` after the regroup pass, but the replay set
+   still shows that the extra safety logic was too costly when it was pushed too
+   far.
 
 3. **Next candidate**
    `roi_reserve_v6` is now submitted from `agents/roi_reserve_v6/main.py`. It
@@ -223,6 +225,10 @@ Keep the agent ladder small:
 This setup makes score movement easier to read: if a variant drops, the replay
 delta tells us whether the issue is over-defense, over-regrouping, or the
 opening itself.
+
+The next branch should stay narrow: choose either `v6_source_safety` or
+`v6_regroup`, then measure it against `v6`. Do not spin up a wider agent line
+until one of those ablations produces a clear gain.
 
 ## 10. Notebook Learning Checklist
 

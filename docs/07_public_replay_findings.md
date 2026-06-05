@@ -9,6 +9,7 @@ Reviewed downloaded public replay JSON for `tuannm3823` and `tuannm3812` submiss
 - `replays/roi_reserve_v3/`
 - `replays/roi_reserve_v4/`
 - `replays/roi_reserve_v5/`
+- `replays/roi_reserve_v6/`
 
 Generated analysis tables are stored under ignored local path
 `outputs/replay_outcome_analysis/`. The reusable analyzer is tracked at
@@ -30,7 +31,8 @@ GET /api/v1/competitions/episodes/<EPISODE_ID>/replay
 | `roi_reserve_v2` | `53322680` | `438.3` then `411.9` for the later v2 notebook submission | 22 | 8 | 14 |
 | `roi_reserve_v3` | `53344107` | `509.9` | 33 | 13 | 20 |
 | `roi_reserve_v4` | `53349976` | `471.9` | 19 | 9 | 10 |
-| `roi_reserve_v5` | `53353907` | `415.4` | 38 | 11 | 27 |
+| `roi_reserve_v5` | `53353907` | `443.5` then `467.6` | 38 | 11 | 27 |
+| `roi_reserve_v6` | `53374152` | `506.8` | 29 | 13 | 16 |
 
 Important scoring note: the starting score is `600.0`, but public score behaves
 like an Elo-style rating. The meaningful signal is score movement after public
@@ -117,7 +119,8 @@ than v4, and v4's replay evidence does not justify promotion.
 
 The `roi_reserve_v5` challenger now tests this direction with a real model
 change around **combat survival**, but current public evidence does not support
-promotion: score moved down to `415.4`, with eleven downloaded wins and twenty-seven downloaded losses.
+promotion. The later regroup pass improved the score to `467.6`, and `roi_reserve_v6`
+improved further to `506.8`, but both still trail the stable v3 baseline.
 
 1. Add source safety checks before launch. A source should not spend ships if
    incoming enemy fleets or nearby enemy production can flip it.
